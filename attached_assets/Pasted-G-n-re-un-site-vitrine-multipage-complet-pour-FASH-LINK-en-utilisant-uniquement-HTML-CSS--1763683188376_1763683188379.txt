@@ -1,0 +1,161 @@
+Génère un site vitrine multipage complet pour FASH'LINK en utilisant uniquement :
+- HTML
+- CSS
+- JavaScript (sans framework)
+
+Palette :
+- Fond blanc (#FFFFFF)
+- Texte noir (#000000)
+- Accents sombres (#111111, #222222, #333333)
+
+Typographie :
+- Montserrat (Google Fonts)
+- Style minimaliste, mode/fashion
+
+Icônes :
+- Utiliser Boxicons (CDN à inclure dans chaque head) :
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+
+--------------------------------
+### STRUCTURE DU SITE (7 pages + CSS + JS)
+
+1. index.html  
+2. a-propos.html  
+3. styliste.html  
+4. jeune-styliste.html  
+5. fonctionnalités.html  
+6. contact.html  
+7. 404.html  
+8. style.css  
+9. script.js  
+
+--------------------------------
+### 📌 1. index.html (Accueil)
+- Header avec logo FASH’LINK + menu icônes Boxicons :
+  Accueil (bx-home), À propos (bx-info-circle), Styliste (bx-user),
+  Jeune Styliste (bx-scissors), Fonctionnalités (bx-grid-alt), Contact (bx-envelope)
+- Hero image + texte : “La plateforme qui connecte stylistes et jeunes talents”
+- Boutons CTA vers styliste.html et jeune-styliste.html
+- Section concept
+- Section “Comment ça marche” (3 étapes avec icônes)
+- Footer avec réseaux sociaux (bxl-instagram, bxl-facebook, bxl-tiktok)
+
+--------------------------------
+### 📌 2. a-propos.html (Nouvelle page)
+Contenu requis :
+
+SECTION 1 — Petite description  
+- Texte court présentant FASH’LINK  
+- Icône bx-info-circle  
+
+SECTION 2 — Comment ça marche  
+Étapes simples :
+1. L’utilisateur remplit un formulaire (bx-edit)  
+2. L’admin vérifie et valide (bxs-badge-check)  
+3. Le profil devient visible (bx-show)  
+4. Le styliste peut être contacté (bx-chat)  
+
+SECTION 3 — Statistiques (exemples fictifs)  
+- 120 stylistes partenaires  
+- 300 jeunes talents inscrits  
+- 850 missions publiées  
+- Icônes : bx-user, bx-group, bx-briefcase, bx-check  
+
+SECTION 4 — Avantages  
+- Validation manuelle = profils fiables (bx-shield-quarter)  
+- Connexion directe talents ↔ stylistes (bx-link-external)  
+- Processus sécurisé (bx-lock)  
+- Visibilité professionnelle (bx-bar-chart-alt)
+
+--------------------------------
+### 📌 3. styliste.html
+- Titre : “Espace Styliste”
+- Explications et avantages
+- Formulaire styliste (ATTENTION : pas de création directe de compte)
+  Champs :
+  Nom  
+  Email  
+  Atelier/Marque  
+  Adresse  
+  Type de besoin  
+  Description  
+- Bouton : “Soumettre ma demande”
+- Message final :  
+  “Votre demande sera examinée par notre équipe. Vous recevrez un email dès validation.”
+
+--------------------------------
+### 📌 4. jeune-styliste.html
+- Titre : “Espace Jeune Styliste”
+- Avantages  
+- Mini galerie portfolio (placeholders)
+- Formulaire de profil (sans création directe de compte) :
+  Nom  
+  Email  
+  Spécialité  
+  Formation  
+  Années d’expérience  
+  Upload images (input file)  
+  Description  
+- Bouton : “Soumettre ma demande”
+- Message final :  
+  “Votre profil sera validé par l’admin avant d’être visible.”
+
+--------------------------------
+### 📌 5. fonctionnalités.html
+Fonctionnalités listées avec icônes Boxicons :
+- Offres & missions → bx-briefcase  
+- Géolocalisation (simulée) → bx-map  
+- Portfolio → bx-image  
+- Chat → bx-chat  
+- Notation → bx-star  
+- Validation admin des profils → bxs-badge-check  
+- Matching → bx-target-lock
+
+--------------------------------
+### 📌 6. contact.html
+Formulaire :
+Nom  
+Email  
+Rôle (select)  
+Message  
+- Icônes : bx-envelope, bx-phone, bx-map-alt  
+- Placeholder carte
+
+--------------------------------
+### 📌 7. 404.html
+- Texte : “Erreur 404”
+- Icône : bx-error-circle
+- Bouton “Retour à l’accueil”
+
+--------------------------------
+### 📌 8. style.css (exigences)
+- Responsive mobile-first  
+- Header sticky + menu hamburger (bx-menu)  
+- Boutons noirs sur fond blanc (hover inversé)  
+- Flexbox & Grid  
+- Séparateurs fins noirs  
+- Sections aérées (padding large)  
+- Galeries responsive  
+- Classes utilitaires :
+  .container, .btn, .grid-2, .grid-3, .section-title, .icon-box, etc.
+
+--------------------------------
+### 📌 9. script.js (exigences)
+- Menu hamburger mobile  
+- Smooth scrolling  
+- Validation des formulaires  
+- Simuler géolocalisation (navigator.geolocation)  
+- Lightbox simple pour portfolio  
+- Message de confirmation après envoi  
+- Aucune création directe de compte → juste soumission de formulaire  
+- Timer sur 404.html pour redirection (optionnel)
+
+--------------------------------
+### LIVRABLES
+→ Fournir les **9 fichiers complets** :  
+index.html, a-propos.html, styliste.html, jeune-styliste.html, fonctionnalités.html, contact.html, 404.html, style.css, script.js.  
+
+→ Tous les lien du menu doivent fonctionner.  
+→ Utiliser Boxicons partout.  
+→ Langue : Français.  
+→ Code propre, bien structuré, prêt à copier-coller.
