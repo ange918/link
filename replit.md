@@ -7,20 +7,21 @@ FASH'LINK est une plateforme vitrine qui connecte stylistes professionnels et je
 
 ### Fichiers HTML (10 pages)
 - `index.html` - Page d'accueil avec hero, concept, étapes, vidéo et témoignages
-- `a-propos.html` - Description, workflow, statistiques et avantages
+- `a-propos.html` - Description, workflow, FAQ accordéon (6 items), Blog (3 articles), statistiques animées et avantages
 - `styliste.html` - Espace styliste avec formulaire de demande
 - `jeune-styliste.html` - Espace jeune styliste avec galerie portfolio et formulaire
-- `fonctionnalités.html` - Présentation des 7 fonctionnalités avec test de géolocalisation
-- `galerie.html` - **NOUVEAU** - Galerie de réalisations et projets réussis
-- `blog.html` - **NOUVEAU** - Blog avec articles mode et newsletter
-- `faq.html` - **NOUVEAU** - Questions fréquentes avec accordéon interactif
+- `fonctionnalités.html` - Fonctionnalités principales (6 cartes), Phase 2 avancées (5 cartes), et Packs économiques (3 packs)
+- `galerie.html` - Galerie de réalisations et projets réussis
+- `blog.html` - Page Blog accessible depuis À propos (hors navigation principale)
+- `faq.html` - Page FAQ accessible depuis À propos (hors navigation principale)
 - `contact.html` - Formulaire de contact et carte
 - `404.html` - Page erreur avec redirection automatique après 10 secondes
 
 ### Fichiers CSS et JavaScript
-- `style.css` - Styles responsive mobile-first avec palette noir et blanc + nouveaux styles
-- `script.js` - Toutes les fonctionnalités interactives
+- `style.css` - Styles responsive mobile-first avec palette noir et blanc + text-transform uppercase pour tous les titres (h1, h2, h3)
+- `script.js` - Toutes les fonctionnalités interactives (accordéon FAQ, compteurs animés, etc.)
 - `favicon.svg` - Icône du site
+- `.gitignore` - Ignore Python cache, virtualenvs et fichiers temporaires
 
 ## Design et Style
 
@@ -32,6 +33,7 @@ FASH'LINK est une plateforme vitrine qui connecte stylistes professionnels et je
 ### Typographie
 - Police: Montserrat (Google Fonts)
 - Style: Minimaliste, mode/fashion
+- **Tous les titres (h1, h2, h3) en MAJUSCULES** via text-transform uppercase
 
 ### Icônes
 - Boxicons 2.1.4 (CDN)
@@ -64,9 +66,16 @@ FASH'LINK est une plateforme vitrine qui connecte stylistes professionnels et je
 - Redirection automatique vers l'accueil
 
 ### FAQ Accordéon
-- Questions/réponses dépliables
-- Fermeture automatique des autres items
-- Animation fluide
+- 6 questions/réponses intégrées dans la page À propos
+- Questions/réponses dépliables avec animation fluide
+- Fermeture automatique des autres items au clic
+- Page FAQ dédiée accessible via lien dans la section
+
+### Compteurs Statistiques Animés
+- Section Statistiques sur la page À propos
+- Compteurs animés au scroll (Intersection Observer)
+- Anime les chiffres de 0 à la valeur cible
+- Affiche les statistiques clés de la plateforme
 
 ### Back-to-Top Button
 - Apparaît après scroll de 300px
@@ -106,15 +115,35 @@ FASH'LINK est une plateforme vitrine qui connecte stylistes professionnels et je
 - Hover effects sur les cartes
 - Responsive grid
 
-### Blog/Actualités
-- 6 articles exemple avec métadonnées
-- Newsletter signup
-- Design moderne avec catégories
+### Blog/Actualités (Page À propos)
+- 3 articles récents affichés sur la page À propos
+- Lien vers la page Blog complète (hors navigation principale)
+- Design moderne avec dates et auteurs
 
-### FAQ
-- 10 questions fréquentes
-- Système d'accordéon interactif
-- Lien vers contact pour autres questions
+### FAQ (Page À propos)
+- 6 questions fréquentes en accordéon sur la page À propos
+- Système d'accordéon interactif et responsive
+- Lien vers la page FAQ complète avec 10 questions (hors navigation principale)
+
+### Fonctionnalités Principales
+- 6 fonctionnalités principales avec icônes Boxicons
+- Design en cartes responsive et élégantes
+- Profils vérifiés, matching intelligent, messagerie, portfolio, opportunités, géolocalisation
+
+### Fonctionnalités Phase 2
+- 5 fonctionnalités avancées à venir
+- Design cohérent avec phase 1
+- Dashboard admin, système rating, API mobile, analytics, partenariats
+
+### Packs & Modèle Économique
+- 3 packs: Découverte (gratuit), Professionnel (29€/mois), Premium (99€/mois)
+- Cartes avec listes d'avantages et CTA
+- Design clair et engageant
+
+### Statistiques Animées (Page À propos)
+- 4 statistiques clés avec compteurs animés
+- Animation déclenchée au scroll (Intersection Observer)
+- Design minimaliste avec grands chiffres
 
 ## SEO & Performance
 
@@ -129,8 +158,17 @@ FASH'LINK est une plateforme vitrine qui connecte stylistes professionnels et je
 - Lazy loading via Intersection Observer
 - CSS minimaliste et performant
 
+## Navigation
+- **Menu principal** : Accueil, À propos, **Fonctionnalités**, Styliste, Jeune Styliste, Galerie, Contact
+- **Pages secondaires** : Blog et FAQ (accessibles via la page À propos, retirées du menu principal)
+- Menu hamburger responsive pour mobile
+- Navigation cohérente sur toutes les pages
+
 ## Déploiement
-Le site est servi via Python HTTP Server sur le port 5000.
+Le site est servi via Python 3.11 HTTP Server sur le port 5000.
+
+### Prérequis
+- Python 3.11 installé via Replit modules
 
 ### Lancer le serveur
 ```bash
@@ -140,21 +178,26 @@ python -m http.server 5000
 ### Accès
 Le site est accessible à l'adresse configurée par Replit sur le port 5000.
 
-## État actuel (Novembre 2025)
+## État actuel (21 novembre 2025)
 - ✅ 10 pages HTML complètes avec contenu en français
 - ✅ Design minimaliste noir et blanc avec images d'arrière-plan
-- ✅ Navigation étendue (Galerie, Blog, FAQ)
+- ✅ **TOUS LES TITRES EN MAJUSCULES** (h1, h2, h3)
+- ✅ Navigation mise à jour : Fonctionnalités ajouté, Blog et FAQ retirés du menu principal
+- ✅ Page À propos enrichie : FAQ accordéon (6 items), Blog (3 articles), Statistiques animées
+- ✅ Page Fonctionnalités complète : 6 principales + 5 Phase 2 + 3 Packs économiques
 - ✅ Tous les formulaires avec validation moderne
 - ✅ Responsive mobile, tablette et desktop
 - ✅ Icônes Boxicons partout
-- ✅ JavaScript interactif complet (menu, forms, lightbox, géo, 404, FAQ, scroll animations, toast, back-to-top)
+- ✅ JavaScript interactif complet : menu, forms, lightbox, géo, 404, **accordéon FAQ**, **compteurs animés**, scroll animations, toast, back-to-top
 - ✅ SEO optimisé avec meta tags
 - ✅ Favicon personnalisé
 - ✅ Témoignages et vidéo sur homepage
 - ✅ Toast notifications au lieu d'alertes
 - ✅ Loader sur soumission de formulaires
-- ✅ Animations au scroll
+- ✅ Animations au scroll (IntersectionObserver)
 - ✅ Bouton retour en haut sur toutes les pages
+- ✅ Python 3.11 installé
+- ✅ .gitignore configuré pour Python
 - ✅ Workflow configuré et fonctionnel
 
 ## Prochaines étapes possibles
