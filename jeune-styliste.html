@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Espace Jeune Styliste - FASH'LINK</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="navbar">
+                <a href="index.html" class="logo">FASH'LINK</a>
+                <ul class="nav-menu">
+                    <li><a href="index.html"><i class='bx bx-home'></i> Accueil</a></li>
+                    <li><a href="a-propos.html"><i class='bx bx-info-circle'></i> À propos</a></li>
+                    <li><a href="styliste.html"><i class='bx bx-user'></i> Styliste</a></li>
+                    <li><a href="jeune-styliste.html"><i class='bx bx-scissors'></i> Jeune Styliste</a></li>
+                    <li><a href="fonctionnalités.html"><i class='bx bx-grid-alt'></i> Fonctionnalités</a></li>
+                    <li><a href="contact.html"><i class='bx bx-envelope'></i> Contact</a></li>
+                </ul>
+                <div class="hamburger">
+                    <i class='bx bx-menu'></i>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h1>Espace Jeune Styliste</h1>
+                <p>Lancez votre carrière et trouvez des opportunités</p>
+            </div>
+        </section>
+
+        <section>
+            <div class="container">
+                <h2 class="section-title">Pourquoi rejoindre FASH'LINK</h2>
+                <div class="grid-3">
+                    <div class="icon-box">
+                        <i class='bx bx-trending-up'></i>
+                        <h3>Développez votre Carrière</h3>
+                        <p>Connectez-vous avec des stylistes établis et accédez à des opportunités professionnelles exclusives.</p>
+                    </div>
+                    <div class="icon-box">
+                        <i class='bx bx-palette'></i>
+                        <h3>Montrez votre Talent</h3>
+                        <p>Créez un portfolio professionnel qui met en valeur vos créations et votre univers artistique.</p>
+                    </div>
+                    <div class="icon-box">
+                        <i class='bx bx-network-chart'></i>
+                        <h3>Réseau Professionnel</h3>
+                        <p>Intégrez une communauté de créatifs et développez votre réseau dans l'industrie de la mode.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="section-divider">
+
+        <section>
+            <div class="container">
+                <h2 class="section-title">Portfolio - Exemples</h2>
+                <p style="text-align: center; margin-bottom: 30px; color: #333;">Cliquez sur une image pour l'agrandir</p>
+                <div class="gallery">
+                    <div class="gallery-item">
+                        <i class='bx bx-image' style="font-size: 48px;"></i>
+                    </div>
+                    <div class="gallery-item">
+                        <i class='bx bx-image' style="font-size: 48px;"></i>
+                    </div>
+                    <div class="gallery-item">
+                        <i class='bx bx-image' style="font-size: 48px;"></i>
+                    </div>
+                    <div class="gallery-item">
+                        <i class='bx bx-image' style="font-size: 48px;"></i>
+                    </div>
+                    <div class="gallery-item">
+                        <i class='bx bx-image' style="font-size: 48px;"></i>
+                    </div>
+                    <div class="gallery-item">
+                        <i class='bx bx-image' style="font-size: 48px;"></i>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="section-divider">
+
+        <section>
+            <div class="container">
+                <h2 class="section-title">Créez votre profil</h2>
+                <form id="jeuneStylisteForm">
+                    <div class="form-group">
+                        <label for="nom">Nom complet *</label>
+                        <input type="text" id="nom" name="nom" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email *</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="specialite">Spécialité *</label>
+                        <select id="specialite" name="specialite" required>
+                            <option value="">Sélectionnez...</option>
+                            <option value="mode-femme">Mode Femme</option>
+                            <option value="mode-homme">Mode Homme</option>
+                            <option value="accessoires">Accessoires</option>
+                            <option value="haute-couture">Haute Couture</option>
+                            <option value="pret-a-porter">Prêt-à-porter</option>
+                            <option value="streetwear">Streetwear</option>
+                            <option value="autre">Autre</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="formation">Formation *</label>
+                        <input type="text" id="formation" name="formation" required placeholder="Ex: École de mode, université, autodidacte...">
+                    </div>
+                    <div class="form-group">
+                        <label for="experience">Années d'expérience *</label>
+                        <select id="experience" name="experience" required>
+                            <option value="">Sélectionnez...</option>
+                            <option value="0-1">Moins d'1 an</option>
+                            <option value="1-2">1-2 ans</option>
+                            <option value="2-3">2-3 ans</option>
+                            <option value="3-5">3-5 ans</option>
+                            <option value="5+">Plus de 5 ans</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="images">Images de portfolio</label>
+                        <input type="file" id="images" name="images" multiple accept="image/*">
+                        <p style="font-size: 12px; color: #666; margin-top: 5px;">Vous pouvez sélectionner plusieurs images (JPG, PNG)</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Présentez-vous et décrivez votre univers *</label>
+                        <textarea id="description" name="description" required placeholder="Parlez de votre parcours, votre style, vos inspirations et vos objectifs..."></textarea>
+                    </div>
+                    <button type="submit" class="btn">Soumettre ma demande</button>
+                </form>
+
+                <div class="form-note">
+                    <i class='bx bx-shield-quarter' style="font-size: 24px; margin-bottom: 10px;"></i>
+                    <p><strong>Validation requise :</strong> Votre profil sera validé par l'admin avant d'être visible sur la plateforme. Vous recevrez une notification par email une fois votre profil approuvé.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="social-links">
+                <a href="#" aria-label="Instagram"><i class='bx bxl-instagram'></i></a>
+                <a href="#" aria-label="Facebook"><i class='bx bxl-facebook'></i></a>
+                <a href="#" aria-label="TikTok"><i class='bx bxl-tiktok'></i></a>
+            </div>
+            <p>&copy; 2025 FASH'LINK. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

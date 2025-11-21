@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Espace Styliste - FASH'LINK</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="navbar">
+                <a href="index.html" class="logo">FASH'LINK</a>
+                <ul class="nav-menu">
+                    <li><a href="index.html"><i class='bx bx-home'></i> Accueil</a></li>
+                    <li><a href="a-propos.html"><i class='bx bx-info-circle'></i> À propos</a></li>
+                    <li><a href="styliste.html"><i class='bx bx-user'></i> Styliste</a></li>
+                    <li><a href="jeune-styliste.html"><i class='bx bx-scissors'></i> Jeune Styliste</a></li>
+                    <li><a href="fonctionnalités.html"><i class='bx bx-grid-alt'></i> Fonctionnalités</a></li>
+                    <li><a href="contact.html"><i class='bx bx-envelope'></i> Contact</a></li>
+                </ul>
+                <div class="hamburger">
+                    <i class='bx bx-menu'></i>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h1>Espace Styliste</h1>
+                <p>Trouvez les talents dont vous avez besoin pour vos projets</p>
+            </div>
+        </section>
+
+        <section>
+            <div class="container">
+                <h2 class="section-title">Pourquoi rejoindre FASH'LINK en tant que Styliste</h2>
+                <div class="grid-3">
+                    <div class="icon-box">
+                        <i class='bx bx-search'></i>
+                        <h3>Trouvez des Talents</h3>
+                        <p>Accédez à une base de jeunes stylistes motivés et qualifiés pour vos projets et collaborations.</p>
+                    </div>
+                    <div class="icon-box">
+                        <i class='bx bx-time-five'></i>
+                        <h3>Gagnez du Temps</h3>
+                        <p>Tous les profils sont pré-validés, vous ne traitez qu'avec des professionnels sérieux et qualifiés.</p>
+                    </div>
+                    <div class="icon-box">
+                        <i class='bx bx-medal'></i>
+                        <h3>Qualité Garantie</h3>
+                        <p>Notre processus de validation garantit que vous accédez uniquement à des profils de haute qualité.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="section-divider">
+
+        <section>
+            <div class="container">
+                <h2 class="section-title">Soumettez votre demande</h2>
+                <form id="stylistForm">
+                    <div class="form-group">
+                        <label for="nom">Nom complet *</label>
+                        <input type="text" id="nom" name="nom" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email *</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="atelier">Atelier / Marque *</label>
+                        <input type="text" id="atelier" name="atelier" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="adresse">Adresse *</label>
+                        <input type="text" id="adresse" name="adresse" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="besoin">Type de besoin *</label>
+                        <select id="besoin" name="besoin" required>
+                            <option value="">Sélectionnez...</option>
+                            <option value="assistant">Assistant styliste</option>
+                            <option value="stagiaire">Stagiaire</option>
+                            <option value="freelance">Freelance pour projet</option>
+                            <option value="collaboration">Collaboration créative</option>
+                            <option value="autre">Autre</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description de vos besoins *</label>
+                        <textarea id="description" name="description" required placeholder="Décrivez votre atelier, vos besoins et le type de collaboration recherchée..."></textarea>
+                    </div>
+                    <button type="submit" class="btn">Soumettre ma demande</button>
+                </form>
+
+                <div class="form-note">
+                    <i class='bx bx-info-circle' style="font-size: 24px; margin-bottom: 10px;"></i>
+                    <p><strong>Important :</strong> Votre demande sera examinée par notre équipe. Vous recevrez un email dès validation avec vos identifiants d'accès à la plateforme.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="social-links">
+                <a href="#" aria-label="Instagram"><i class='bx bxl-instagram'></i></a>
+                <a href="#" aria-label="Facebook"><i class='bx bxl-facebook'></i></a>
+                <a href="#" aria-label="TikTok"><i class='bx bxl-tiktok'></i></a>
+            </div>
+            <p>&copy; 2025 FASH'LINK. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
