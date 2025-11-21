@@ -202,6 +202,10 @@ section {
     padding: 80px 0;
 }
 
+h1, h2, h3 {
+    text-transform: uppercase;
+}
+
 .section-title {
     font-size: 36px;
     font-weight: 700;
@@ -1065,6 +1069,322 @@ form {
     margin-bottom: 20px;
 }
 
+.faq-section {
+    background-color: #f9f9f9;
+    padding: 80px 0;
+}
+
+.faq-section .faq-container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.faq-section .faq-item {
+    background-color: var(--white);
+    border: 2px solid var(--black);
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.faq-section .faq-question {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px 30px;
+    cursor: pointer;
+    background-color: var(--white);
+    transition: all 0.3s ease;
+}
+
+.faq-section .faq-question:hover {
+    background-color: #f5f5f5;
+}
+
+.faq-section .faq-question h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.faq-section .faq-question i {
+    font-size: 28px;
+    transition: transform 0.3s ease;
+}
+
+.faq-section .faq-item.active .faq-question i {
+    transform: rotate(45deg);
+}
+
+.faq-section .faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    background-color: #fafafa;
+}
+
+.faq-section .faq-item.active .faq-answer {
+    max-height: 500px;
+}
+
+.faq-section .faq-answer p {
+    padding: 25px 30px;
+    margin: 0;
+    line-height: 1.8;
+    color: var(--gray-light);
+}
+
+.blog-section {
+    padding: 80px 0;
+    background-color: var(--white);
+}
+
+.blog-preview-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin-top: 50px;
+}
+
+.blog-preview-card {
+    border: 2px solid var(--black);
+    background-color: var(--white);
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.blog-preview-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.blog-preview-image {
+    width: 100%;
+    height: 200px;
+    background-color: var(--gray-medium);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+}
+
+.blog-preview-image i {
+    font-size: 64px;
+}
+
+.blog-preview-content {
+    padding: 25px;
+}
+
+.blog-preview-content h3 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    line-height: 1.4;
+}
+
+.blog-preview-content p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--gray-light);
+    margin-bottom: 20px;
+}
+
+.blog-preview-btn {
+    display: inline-block;
+    padding: 10px 25px;
+    background-color: var(--black);
+    color: var(--white);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    border: 2px solid var(--black);
+}
+
+.blog-preview-btn:hover {
+    background-color: var(--white);
+    color: var(--black);
+}
+
+.stats-animated {
+    padding: 80px 0;
+    background-color: #f9f9f9;
+}
+
+.stats-animated .grid-4 {
+    margin-top: 50px;
+}
+
+.stat-animated-item {
+    text-align: center;
+    padding: 40px 20px;
+    border: 2px solid var(--black);
+    background-color: var(--white);
+}
+
+.stat-animated-item i {
+    font-size: 56px;
+    margin-bottom: 20px;
+    display: block;
+}
+
+.stat-animated-number {
+    font-size: 56px;
+    font-weight: 700;
+    color: var(--black);
+    margin-bottom: 15px;
+}
+
+.stat-animated-label {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--gray-light);
+    text-transform: none;
+}
+
+.features-main-section {
+    padding: 80px 0;
+}
+
+.features-main-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin-top: 50px;
+}
+
+.feature-main-card {
+    border: 2px solid var(--black);
+    padding: 40px 30px;
+    text-align: center;
+    background-color: var(--white);
+    transition: all 0.3s ease;
+}
+
+.feature-main-card:hover {
+    background-color: var(--black);
+    color: var(--white);
+}
+
+.feature-main-card i {
+    font-size: 64px;
+    margin-bottom: 25px;
+    display: block;
+}
+
+.feature-main-card h3 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.feature-main-card p {
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.features-premium-section {
+    padding: 80px 0;
+    background-color: #f9f9f9;
+}
+
+.features-premium-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+    margin-top: 50px;
+}
+
+.feature-premium-card {
+    border: 2px solid var(--black);
+    padding: 40px;
+    background-color: var(--white);
+    display: flex;
+    align-items: flex-start;
+    gap: 25px;
+    transition: all 0.3s ease;
+}
+
+.feature-premium-card:hover {
+    transform: translateX(10px);
+    box-shadow: -10px 10px 0 var(--black);
+}
+
+.feature-premium-card i {
+    font-size: 48px;
+    flex-shrink: 0;
+}
+
+.feature-premium-card h3 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.feature-premium-card p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--gray-light);
+}
+
+.packs-section {
+    padding: 80px 0;
+}
+
+.packs-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin-top: 50px;
+}
+
+.pack-card {
+    border: 2px solid var(--black);
+    padding: 50px 40px;
+    text-align: center;
+    background-color: var(--white);
+    transition: all 0.3s ease;
+}
+
+.pack-card:hover {
+    background-color: var(--black);
+    color: var(--white);
+}
+
+.pack-card h3 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 30px;
+}
+
+.pack-card ul {
+    list-style: none;
+    margin-bottom: 30px;
+    text-align: left;
+}
+
+.pack-card li {
+    padding: 12px 0;
+    font-size: 14px;
+    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.pack-card:hover li {
+    border-bottom-color: #444;
+}
+
+.pack-card li i {
+    font-size: 18px;
+}
+
+.pack-featured {
+    transform: scale(1.05);
+    border-width: 3px;
+}
+
 @media (max-width: 768px) {
     .project-grid,
     .blog-grid {
@@ -1079,6 +1399,13 @@ form {
     }
 
     .testimonials-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .blog-preview-grid,
+    .features-main-grid,
+    .features-premium-grid,
+    .packs-grid {
         grid-template-columns: 1fr;
     }
 }

@@ -88,6 +88,41 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+    const statNumbers = document.querySelectorAll('.stat-animated-number');
+    if (statNumbers.length > 0) {
+        const animateCounter = (element, target) => {
+            const duration = 2000;
+            const start = 0;
+            const increment = target / (duration / 16);
+            let current = start;
+            const isPercentage = target.toString().includes('%');
+            const numericTarget = parseInt(target);
+
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= numericTarget) {
+                    current = numericTarget;
+                    clearInterval(timer);
+                }
+                element.textContent = isPercentage ? Math.floor(current) + '%' : Math.floor(current) + '+';
+            }, 16);
+        };
+
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !entry.target.classList.contains('counted')) {
+                    entry.target.classList.add('counted');
+                    const target = entry.target.getAttribute('data-target');
+                    animateCounter(entry.target, target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        statNumbers.forEach(stat => {
+            statsObserver.observe(stat);
+        });
+    }
+
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
             e.preventDefault();
