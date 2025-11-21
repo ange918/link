@@ -1,3 +1,23 @@
+function showToast(message, type = 'success') {
+    let toast = document.querySelector('.toast');
+    if (!toast) {
+        toast = document.createElement('div');
+        toast.className = 'toast';
+        document.body.appendChild(toast);
+    }
+    
+    toast.className = `toast toast-${type}`;
+    
+    const icon = type === 'success' ? 'bx-check-circle' : type === 'error' ? 'bx-error-circle' : 'bx-info-circle';
+    toast.innerHTML = `<i class='bx ${icon}'></i><span>${message}</span>`;
+    
+    toast.classList.add('show');
+    
+    setTimeout(() => {
+        toast.classList.remove('show');
+    }, 4000);
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     const hamburger = document.querySelector('.hamburger');
     const navMenu = document.querySelector('.nav-menu');
@@ -13,6 +33,60 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
+
+    const backToTop = document.getElementById('back-to-top');
+    if (backToTop) {
+        window.addEventListener('scroll', function() {
+            if (window.pageYOffset > 300) {
+                backToTop.classList.add('show');
+            } else {
+                backToTop.classList.remove('show');
+            }
+        });
+
+        backToTop.addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    }
+
+    const fadeElements = document.querySelectorAll('.fade-in');
+    if (fadeElements.length > 0) {
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        fadeElements.forEach(element => {
+            observer.observe(element);
+        });
+    }
+
+    const faqItems = document.querySelectorAll('.faq-item');
+    faqItems.forEach(item => {
+        const question = item.querySelector('.faq-question');
+        question.addEventListener('click', function() {
+            const isActive = item.classList.contains('active');
+            
+            faqItems.forEach(otherItem => {
+                otherItem.classList.remove('active');
+            });
+            
+            if (!isActive) {
+                item.classList.add('active');
+            }
+        });
+    });
 
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
@@ -56,27 +130,26 @@ document.addEventListener('DOMContentLoaded', function() {
             });
             
             if (isValid) {
-                let successMessage = form.querySelector('.success-message');
-                if (!successMessage) {
-                    successMessage = document.createElement('div');
-                    successMessage.className = 'success-message';
-                    successMessage.textContent = 'Votre demande a été envoyée avec succès ! Nous vous contacterons bientôt.';
-                    form.appendChild(successMessage);
-                }
+                const submitButton = form.querySelector('button[type="submit"]');
+                const originalText = submitButton.textContent;
                 
-                successMessage.classList.add('show');
-                form.reset();
+                submitButton.disabled = true;
+                submitButton.innerHTML = '<div class="loading-spinner show"></div>';
                 
                 setTimeout(() => {
-                    successMessage.classList.remove('show');
-                }, 5000);
-                
-                window.scrollTo({
-                    top: successMessage.offsetTop - 100,
-                    behavior: 'smooth'
-                });
+                    submitButton.disabled = false;
+                    submitButton.textContent = originalText;
+                    
+                    showToast('Votre demande a été envoyée avec succès ! Nous vous contacterons bientôt.', 'success');
+                    form.reset();
+                    
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                }, 1500);
             } else {
-                alert('Veuillez remplir tous les champs requis correctement.');
+                showToast('Veuillez remplir tous les champs requis correctement.', 'error');
             }
         });
     });
