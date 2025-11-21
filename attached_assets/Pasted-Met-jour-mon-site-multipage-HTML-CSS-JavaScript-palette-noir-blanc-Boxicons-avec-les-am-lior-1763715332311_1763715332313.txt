@@ -1,0 +1,192 @@
+Met à jour mon site multipage (HTML, CSS, JavaScript, palette noir/blanc, Boxicons) avec les améliorations suivantes :
+
+🟦 1. Mettre à jour la page À propos (about.html)
+🔸 A. TITRES EN MAJUSCULE
+
+Ajouter text-transform: uppercase; sur tous les h1, h2, h3.
+
+🔸 B. Ajouter une SECTION FAQ
+
+Créer une section dans la page À propos :
+
+Système d’accordéon animé
+
+Icônes Boxicons (bx-plus / bx-minus)
+
+Bordures noires
+
+Animation fluide
+
+Questions :
+
+Qu’est-ce que FASH’LINK ?
+
+Comment fonctionne la validation des profils ?
+
+Est-ce payant ?
+
+Puis-je proposer des missions urgentes ?
+
+Comment les jeunes stylistes sont-ils mis en avant ?
+
+Puis-je modifier mon profil après validation ?
+
+🔸 C. Ajouter une SECTION BLOG
+
+Juste après la FAQ :
+
+Créer une grille de 3 articles :
+
+Image placeholder
+
+Icône bx-news
+
+Titre (en majuscules)
+
+Paragraphe court
+
+Bouton “Lire Plus”
+
+Articles recommandés :
+
+L'ÉVOLUTION DU MÉTIER DE STYLISTE EN AFRIQUE
+
+COMMENT CRÉER UN PORTFOLIO IMPACTANT
+
+5 ERREURS À ÉVITER LORS DES COLLABORATIONS
+
+🔸 D. Ajouter une SECTION STATISTIQUES avec ANIMATION (compteurs)
+
+Créer une section “STATISTIQUES” avec animation compteur :
+
+Statistiques :
+
+350+ stylistes validés
+
+120+ collaborations réussies
+
+95% satisfaction
+
+40+ marques partenaires
+
+Effet :
+
+Chaque compteur commence à 0
+
+Animé jusqu’au chiffre final
+
+Se déclenche quand la section entre dans le viewport
+
+Icônes Boxicons suggérées :
+
+bx-user-check
+
+bx-check-circle
+
+bx-like
+
+bx-building
+
+🟦 2. Ajouter une NOUVELLE PAGE Fonctionnalités (features.html)
+
+Créer une page features.html avec 3 grandes sections :
+
+🔸 A. Fonctionnalités principales
+
+Créer une grille de cartes propres :
+
+Recherche avancée (bx-search)
+
+Filtres par compétences (bx-filter)
+
+Portfolios stylistes (bx-images)
+
+Matching styliste / besoin (bx-transfer)
+
+Chat intégré (bx-chat)
+
+Notation & recommandations (bx-star)
+
+Style :
+Cartes blanches, bordures noires, hover inversé (fond noir / texte blanc).
+
+🔸 B. Fonctionnalités avancées (Phase 2)
+
+Séparer dans une section Premium :
+
+Matching automatique basé sur les compétences
+
+Paiements sécurisés + contrats simplifiés
+
+Analyse IA des portfolios
+
+Système de notation amélioré
+
+Catalogue de formations continues
+
+Chaque fonctionnalité = grande carte avec icône.
+
+🔸 C. Packs & Modèle Économique
+
+Créer 3 cartes “packs” :
+
+PACK MISSION
+
+Commission 10%
+
+Sans engagement
+
+Paiement sécurisé
+
+PACK PREMIUM STYLISTES
+
+Mise en avant
+
+Recherche avancée
+
+Statistiques pro
+
+Accès aux features Phase 2
+
+PACK URGENCE
+
+Affichage prioritaire
+
+Badge URGENT
+
+Packs de crédits
+
+Style :
+Grille responsive 3 colonnes → 1 colonne sur mobile.
+
+🟦 3. Mise à jour de la NAVIGATION
+
+Ajouter Fonctionnalités dans le menu
+
+Supprimer FAQ et Blog du menu (car déplacés dans À propos)
+
+Garder tous les autres liens
+
+🟦 4. Style & JavaScript
+
+Mettre à jour :
+
+style.css → titres en majuscule, nouvelles sections, cartes, accordéon
+
+script.js → accordéon FAQ + compteur statistiques + animations au scroll
+
+about.html → intégrer FAQ + blog + stats
+
+créer features.html
+
+👉 Fichiers à générer / modifier :
+
+about.html
+
+features.html
+
+style.css
+
+script.js
+
+Navbar globale
