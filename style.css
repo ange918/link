@@ -87,9 +87,29 @@ header {
 }
 
 .hero {
-    padding: 100px 0;
+    padding: 150px 0;
     text-align: center;
     border-bottom: 1px solid var(--black);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 1;
+}
+
+.hero .container {
+    position: relative;
+    z-index: 2;
 }
 
 .hero h1 {
@@ -97,12 +117,37 @@ header {
     font-weight: 700;
     margin-bottom: 20px;
     line-height: 1.2;
+    color: var(--white);
 }
 
 .hero p {
     font-size: 20px;
     margin-bottom: 40px;
-    color: var(--gray-light);
+    color: #DDDDDD;
+}
+
+.hero-index {
+    background-image: url('attached_assets/stock_images/fashion_designer_wor_157b9701.jpg');
+}
+
+.hero-apropos {
+    background-image: url('attached_assets/stock_images/creative_team_fashio_8a0cd040.jpg');
+}
+
+.hero-styliste {
+    background-image: url('attached_assets/stock_images/professional_stylist_19228052.jpg');
+}
+
+.hero-jeune {
+    background-image: url('attached_assets/stock_images/young_designer_fashi_55af5c4e.jpg');
+}
+
+.hero-fonctionnalites {
+    background-image: url('attached_assets/stock_images/modern_technology_di_9a69483f.jpg');
+}
+
+.hero-contact {
+    background-image: url('attached_assets/stock_images/minimal_office_conta_2c7d43ac.jpg');
 }
 
 .hero-image {
