@@ -15,15 +15,15 @@
     <canvas id="scene"></canvas>
     <div class="vignette"></div>
     <div class="callouts" id="callouts"><svg></svg></div>
-    <p class="bignum" id="bigNum"></p>
+    <p class="bignum" id="bigNum" aria-hidden="true"></p>
   </div>
 
   <div class="loader" id="loader" role="status" aria-live="polite">
     <div class="loader__inner">
       <svg class="brandmark" viewBox="0 0 26 26" aria-hidden="true"><circle cx="13" cy="13" r="12"/><path d="M4 15.5 L13 6 L22 15.5 M13 6 V21 M9 21 H17"/></svg>
       <p class="loader__title">Anatomie d'un long-courrier</p>
-      <div class="loader__bar"><span id="loaderBar"></span></div>
-      <p class="loader__text" id="loaderText">Chargement du modèle 3D…</p>
+      <div class="loader__bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Chargement du modèle"><span id="loaderBar"></span></div>
+      <p class="loader__text" id="loaderText"><span id="loaderMsg">Chargement du modèle 3D…</span> <span id="loaderPct" class="pct" aria-hidden="true"></span></p>
     </div>
   </div>
 
@@ -37,14 +37,18 @@
   </header>
 
   <nav class="progress" aria-label="Chapitres">
+    <span class="progress__mark" id="progressMark" aria-hidden="true"></span>
     <ol id="progress"></ol>
   </nav>
 
   <main id="story">
     <section class="chapter chapter--hero" id="hero" data-index="0">
       <div class="hero">
-        <p class="eyebrow">Démo 3D interactive</p>
-        <h1>Anatomie<br />d'un <span class="keep">long-courrier</span></h1>
+        <p class="eyebrow"><span class="eyebrow__in">Démo 3D interactive</span></p>
+        <h1>
+          <span class="mask"><span class="mask-inner">Anatomie</span></span>
+          <span class="mask"><span class="mask-inner">d'un <span class="keep">long-courrier</span></span></span>
+        </h1>
         <p class="lead">Faites défiler : l'avion se démonte pièce par pièce, ouvre son poste de pilotage et son moteur, puis se réassemble.</p>
         <a class="btn btn--primary" href="#eclate">
           Commencer
@@ -57,7 +61,7 @@
       <article class="panel">
         <span class="tick tl"></span><span class="tick tr"></span><span class="tick bl"></span><span class="tick br"></span>
         <p class="sec-num">Vue éclatée</p>
-        <h2>Treize pièces, un seul appareil</h2>
+        <h2><span class="mask"><span class="mask-inner">Treize pièces, un seul appareil</span></span></h2>
         <p class="p-desc">Le modèle 3D a été découpé en pièces distinctes : fuselage, nez, ailes, mâts, nacelles, soufflantes, dérive et plans horizontaux. Le train d'atterrissage, la cabine, le poste de pilotage et le moteur écorché ont été ajoutés en modélisation procédurale.</p>
       </article>
     </section>
@@ -69,7 +73,7 @@
       <article class="panel panel--final">
         <span class="tick tl"></span><span class="tick tr"></span><span class="tick bl"></span><span class="tick br"></span>
         <p class="sec-num">Réassemblage</p>
-        <h2>Prêt pour le départ</h2>
+        <h2><span class="mask"><span class="mask-inner">Prêt pour le départ</span></span></h2>
         <p class="p-desc">Chaque pièce a retrouvé sa place : la structure, la voilure, la propulsion et les commandes forment de nouveau un seul appareil.</p>
         <div class="actions">
           <a class="btn btn--primary" href="#hero">
@@ -102,5 +106,6 @@
   </div>
 
   <script type="module" src="/src/main.js"></script>
+  <noscript><style>.loader{display:none}</style></noscript>
 </body>
 </html>

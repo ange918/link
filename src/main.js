@@ -17,6 +17,7 @@ import { buildGear } from './gear.js';
 import { buildCabin } from './cabin.js';
 import { buildTurbofan } from './turbofan.js';
 import { buildCockpit } from './cockpit.js';
+import { motion } from './motion.js';
 
 gsap.registerPlugin(ScrollTrigger);
 const BASE = import.meta.env.BASE_URL;
@@ -43,7 +44,7 @@ CHAPTERS.forEach((c, j) => {
     <article class="panel">
       <span class="tick tl"></span><span class="tick tr"></span><span class="tick bl"></span><span class="tick br"></span>
       <p class="sec-num"><b>${c.num}</b> / ${TOTAL} — ${c.kicker}</p>
-      <h2 id="t-${c.id}">${c.title}</h2>
+      <h2 id="t-${c.id}"><span class="mask"><span class="mask-inner">${c.title}</span></span></h2>
       <p class="p-desc">${c.text}</p>
       <ul class="chips" aria-label="Éléments clés">${c.tags.map((t) => `<li>${t}</li>`).join('')}</ul>
       <p class="origin">${c.originText ?? ORIGIN[c.origin]}</p>
@@ -66,7 +67,66 @@ const segs = [...prog.querySelectorAll('.seg')];
 const chapterLabel = document.getElementById('chapterLabel');
 const chapterNum = document.getElementById('chapterNum');
 const bigNum = document.getElementById('bigNum');
+const progressMark = document.getElementById('progressMark');
+const loaderMsg = document.getElementById('loaderMsg');
+const loaderPct = document.getElementById('loaderPct');
+const loaderBarWrap = document.querySelector('.loader__bar');
 let active = -1;
+
+function makeOdo(el, count) {
+  if (!el) return [];
+  el.classList.add('odo');
+  el.replaceChildren();
+  const cols = [];
+  for (let i = 0; i < count; i++) {
+    const col = document.createElement('span');
+    col.className = 'odo__col';
+    const strip = document.createElement('span');
+    strip.className = 'odo__strip';
+    for (let d = 0; d <= 9; d++) {
+      const span = document.createElement('span');
+      span.textContent = String(d);
+      strip.appendChild(span);
+    }
+    col.appendChild(strip);
+    el.appendChild(col);
+    cols.push({ col, strip });
+  }
+  return cols;
+}
+const bigCols = makeOdo(bigNum, 2);
+const loaderCols = makeOdo(loaderPct, 2);
+function rollOdo(cols, value, animate) {
+  if (!cols.length) return;
+  const str = String(value).padStart(cols.length, '0').slice(-cols.length);
+  cols.forEach((c, i) => {
+    const h = c.col.clientHeight;
+    if (!h) return;
+    const y = -Number(str[i]) * h;
+    if (!animate || reduced) gsap.set(c.strip, { y });
+    else gsap.to(c.strip, { y, duration: motion.dur.m, ease: motion.ease.out, overwrite: true });
+  });
+}
+function slideMark(i) {
+  if (!progressMark) return;
+  const seg = segs.find((a) => +a.dataset.k === i);
+  if (!seg || i < 2 || i > 8) {
+    gsap.to(progressMark, { autoAlpha: 0, duration: reduced ? motion.dur.fade : motion.dur.s, overwrite: true });
+    return;
+  }
+  const bar = seg.querySelector('i');
+  const host = progressMark.parentElement.getBoundingClientRect();
+  const br = bar.getBoundingClientRect();
+  if (br.width < 1) return;
+  gsap.to(progressMark, {
+    x: br.left - host.left,
+    scaleX: br.width,
+    autoAlpha: 1,
+    duration: reduced ? 0 : motion.dur.s,
+    ease: motion.ease.out,
+    overwrite: true,
+  });
+}
 function setActive(i) {
   if (i === active) return;
   active = i;
@@ -77,8 +137,12 @@ function setActive(i) {
   });
   chapterLabel.textContent = LABELS[i];
   chapterNum.innerHTML = NUMS[i] ? `<b>${NUMS[i]}</b> / ${TOTAL}` : '';
-  bigNum.textContent = NUMS[i];
-  bigNum.classList.toggle('is-on', !!NUMS[i]);
+  if (NUMS[i]) { bigNum.classList.add('is-on'); rollOdo(bigCols, NUMS[i], true); }
+  else bigNum.classList.remove('is-on');
+  slideMark(i);
+  if (!reduced && chapterLabel.textContent) {
+    gsap.fromTo(chapterLabel, { opacity: 0.35 }, { opacity: 1, duration: motion.dur.s, ease: motion.ease.out, overwrite: true });
+  }
   if (reduced) jumpTo(i);
 }
 function setProgress(p) { // p : position dans la timeline (0 → 9)
@@ -160,7 +224,12 @@ CHAPTERS.forEach((c, j) => {
 tl.to(S, { cabin: 0, duration: 0.3 }, 8.4);
 tl.to(S.dim, { ...Object.fromEntries(GROUPS.map((g) => [g, 0])), duration: 0.3 }, 8.2);
 camTo('final', 8.2, 0.62);
-['cabine', 'moteurs', 'ailes', 'empennage', 'cockpit', 'train'].forEach((g, i) => tl.to(S.ex, { [g]: 0, duration: 0.38 }, 8.2 + i * 0.07));
+// Extrémités d'abord (ailes, empennage, nacelles), puis train, cabine, nez.
+// Le back.out ne porte que sur le dernier accostage. Fin à 8.9 : la clé vide à t = 9 reste la durée.
+['ailes', 'empennage', 'moteurs', 'train', 'cabine', 'cockpit'].forEach((g, i) => {
+  const last = i === 5;
+  tl.to(S.ex, { [g]: 0, duration: last ? 0.4 : 0.32, ease: last ? motion.ease.dock : 'power3.inOut' }, 8.2 + i * 0.06);
+});
 tl.to(S, { gear: 0, duration: 0.3 }, 8.55);
 tl.set({}, {}, 9);
 
@@ -168,7 +237,7 @@ tl.set({}, {}, 9);
 const canvas = document.getElementById('scene');
 const loader = document.getElementById('loader');
 const loaderBar = document.getElementById('loaderBar');
-const loaderText = document.getElementById('loaderText');
+let showProgress = () => {};
 let renderer;
 try {
   renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
@@ -248,9 +317,26 @@ if (renderer) {
     };
   }
 
-  const showProgress = (pct) => {
-    loaderBar.style.transform = `scaleX(${pct / 100})`;
-    loaderText.textContent = `Chargement du modèle 3D… ${pct} %`;
+  let shownPct = -1;
+  showProgress = (pct) => {
+    const n = Math.max(0, Math.min(100, Math.round(pct)));
+    loaderBar.style.transform = `scaleX(${n / 100})`;
+    loaderBarWrap?.setAttribute('aria-valuenow', String(n));
+    if (n === shownPct) return;
+    const first = shownPct < 0;
+    shownPct = n;
+    if (!loaderPct) return;
+    if (reduced) {
+      loaderPct.classList.remove('odo');
+      loaderPct.textContent = String(n);
+      return;
+    }
+    if (n >= 100) {
+      loaderPct.classList.remove('odo');
+      loaderPct.textContent = '100';
+      return;
+    }
+    rollOdo(loaderCols, n, !first);
   };
   const gltfLoader = new GLTFLoader().setMeshoptDecoder(MeshoptDecoder);
   gltfLoader.loadAsync(`${BASE}models/avion.glb`, (e) => {
@@ -258,22 +344,20 @@ if (renderer) {
     showProgress(Math.min(99, Math.round((e.loaded / total) * 100)));
   }).then((gltf) => {
     setupModel(gltf.scene);
-    loaderText.textContent = 'Préparation de la scène…';
+    if (loaderMsg) loaderMsg.textContent = 'Préparation de la scène…';
     resize();
     // précompile les éléments cachés au départ (train, cabine, intérieur, moteur écorché) pour éviter un à-coup
     for (const o of [gear.root, cabin.root, engine.root, cockpit.root]) o.visible = true;
     renderer.compile(scene, camera);
     ready = true;
     render(0);
-    requestAnimationFrame(() => {
-      loader.classList.add('is-done');
-      ScrollTrigger.refresh();
-    });
+    requestAnimationFrame(() => finishLoader(true));
   }).catch((err) => {
     console.error(err);
-    loaderText.textContent = 'Le modèle 3D n’a pas pu être chargé. Le contenu texte reste disponible.';
+    if (loaderMsg) loaderMsg.textContent = 'Le modèle 3D n’a pas pu être chargé. Le contenu texte reste disponible.';
+    if (loaderPct) { loaderPct.classList.remove('odo'); loaderPct.textContent = ''; }
     loader.classList.add('is-error');
-    setTimeout(() => loader.classList.add('is-done'), 2500);
+    setTimeout(() => finishLoader(false), 2500);
   });
 }
 
@@ -366,6 +450,37 @@ function fade(list, k) {
     m.depthWrite = op > 0.5;
   }
 }
+// Étage du moteur écorché : k suit S.cut (scrub), pas l'horloge, pour que le retour arrière reste exact.
+function stageAmount(cut, index) {
+  if (index === 0) return THREE.MathUtils.smoothstep(cut, 0, 0.38);
+  const span = 0.62 / 5;
+  const start = 0.38 + (index - 1) * span;
+  return THREE.MathUtils.smoothstep(cut, start, Math.min(1, start + span * 1.35));
+}
+function lightList(list, k, glow) {
+  const clamped = THREE.MathUtils.clamp(k, 0, 1);
+  const settle = clamped + 0.2 * Math.sin(clamped * Math.PI) * clamped;
+  for (const it of list) {
+    const m = it.mat;
+    const op = (it.base ?? 1) * clamped;
+    const tr = op < 0.995;
+    if (m.transparent !== tr) { m.transparent = tr; m.needsUpdate = true; }
+    m.opacity = op;
+    if ('depthWrite' in m) m.depthWrite = op > 0.5;
+    if (!glow || !m.emissive) continue;
+    const em = 0.18 * settle;
+    if (Math.abs((m.userData._em ?? -1) - em) <= 0.001) continue;
+    m.emissiveIntensity = em;
+    m.userData._em = em;
+  }
+}
+function tintEmissive(mat, em) {
+  if (!mat.emissive) return;
+  if (!mat.userData._tint) { mat.emissive.setHex(0x9ad7ff); mat.userData._tint = 1; }
+  if (Math.abs((mat.userData._em ?? -1) - em) <= 0.001) return;
+  mat.emissiveIntensity = em;
+  mat.userData._em = em;
+}
 
 const tmpV = new THREE.Vector3();
 function applyState(t) {
@@ -399,11 +514,18 @@ function applyState(t) {
     if (g === 'cockpit') solid *= 1 - 0.96 * S.nose;
     if (g === 'cabine') solid = S.cabin;
     fade(groupMats[g], solid);
+    const presented = 1 - d;
+    const over = presented * Math.sin(Math.min(presented, 1) * Math.PI);
+    const settle = presented + 0.2 * over;
+    const noseCut = g === 'cockpit' ? 1 - S.nose : 1;
+    const em = (g === focus && focusMode > 0.01) ? 0.18 * settle * noseCut : 0;
+    for (const it of groupMats[g]) tintEmissive(it.mat, em);
     const G = ghost[g]; if (!G) continue;
     const gl = g === 'cockpit' ? Math.max(d, S.nose) : d;
     G.fill.opacity = 0.06 * gl;
     G.line.opacity = 0.3 * gl;
-    G.rim.uniforms.uStrength.value = 1.25 * (1 - d) * focusMode * (g === 'cockpit' ? 1 - 0.75 * S.nose : 1);
+    const rimExtra = g === focus && focusMode > 0.01 ? 1 + (settle - presented) : 1;
+    G.rim.uniforms.uStrength.value = 1.25 * rimExtra * (1 - d) * focusMode * (g === 'cockpit' ? 1 - 0.75 * S.nose : 1);
     G.fill.visible = G.fill.opacity > 0.001; G.line.visible = G.line.opacity > 0.001; G.rim.visible = G.rim.uniforms.uStrength.value > 0.001;
   }
   // moteur écorché : la nacelle droite et sa soufflante laissent la place à la coupe
@@ -416,7 +538,9 @@ function applyState(t) {
       gh.fill.visible = gh.fill.visible && cut < 0.5; gh.edges.visible = gh.edges.visible && cut < 0.5; gh.rim.visible = gh.rim.visible && cut < 0.5;
     }
     engine.root.visible = cut > 0.01;
-    if (engine.root.visible) fade(engine.mats, cut);
+    if (engine.root.visible && engine.staged) {
+      engine.staged.forEach((list, i) => lightList(list, stageAmount(cut, i), i > 0));
+    }
   }
   if (cockpit) {
     cockpit.root.visible = S.nose > 0.02;
@@ -433,17 +557,38 @@ function applyState(t) {
   // caméra (recul sur les écrans étroits) et brouillard mis à la même échelle
   const tx = S.tgt.x, ty = S.tgt.y, tz = S.tgt.z;
   const ds = distScale * (1 + (S.lens.mob - 1) * THREE.MathUtils.clamp((distScale - 1) / 0.6, 0, 1));
-  camera.position.set(tx + (S.cam.x - tx) * ds, ty + (S.cam.y - ty) * ds, tz + (S.cam.z - tz) * ds);
+  // Dolly d'intro : on ne touche pas S.cam (la timeline le lirait). Uniquement tant que t = 0.
+  if (tl.time() > 0.001 && intro.k < 1) { gsap.killTweensOf(intro); intro.k = 1; }
+  const pull = intro.k < 1 ? 1.07 - 0.07 * intro.k : 1;
+  const span = ds * pull;
+  camera.position.set(tx + (S.cam.x - tx) * span, ty + (S.cam.y - ty) * span, tz + (S.cam.z - tz) * span);
   camera.lookAt(tx, ty, tz);
   const fov = S.lens.fov + (isMobile ? 12 : 0);
   if (Math.abs(fov - lensFov) > 0.01) { lensFov = fov; camera.fov = fov; camera.updateProjectionMatrix(); }
   scene.fog.near = 90 * distScale; scene.fog.far = 230 * distScale;
-  // rotation des soufflantes / attelages et léger flottement (désactivés en mouvement réduit)
+  // montée en régime (1,2 s) puis ralentissement ; le flottement du modèle reste celui d'origine
   if (!reduced) {
-    for (const f of fans) f.rotation.x += 0.06;
-    if (engine?.root.visible) { engine.lp.rotation.x += 0.012; engine.hp.rotation.x += 0.03; }
+    spinFans(t);
     root.position.y = Math.sin(t * 0.0005) * 0.3;
-  } else root.position.y = 0;
+  } else {
+    fanRate = 0;
+    root.position.y = 0;
+  }
+}
+let fanRate = 0;
+let lastFrame = 0;
+function spinFans(t) {
+  if (!lastFrame) { lastFrame = t; return; }
+  const dt = Math.min(0.05, Math.max(0, (t - lastFrame) / 1000));
+  lastFrame = t;
+  if (!dt) return;
+  const target = S.cut > 0.2 ? 1 : (S.ex.moteurs > 0.5 ? 0.2 : 0);
+  const tau = target >= fanRate ? motion.dur.spin : motion.dur.spin * 0.5;
+  fanRate += (target - fanRate) * (1 - Math.exp(-dt / tau));
+  if (fanRate < 0.002) return;
+  const step = dt * 3.6 * fanRate;
+  for (const f of fans) f.rotation.x += step;
+  if (engine?.root.visible) { engine.lp.rotation.x += step * 0.2; engine.hp.rotation.x += step * 0.5; }
 }
 function groupExit(g) {
   const map = { fuselage: 'fuselage', cockpit: 'cockpit', ailes: 'aile_D', moteurs: 'nacelle_D', empennage: 'derive', train: 'train_avant', cabine: 'cabine' };
@@ -456,42 +601,77 @@ const callLayer = document.getElementById('callouts');
 const callSvg = callLayer.querySelector('svg');
 const CALL_SETS = [];
 function buildCallouts() {
-  const mk = (owner, list, amt) => {
-    const set = { owner, amt, items: [] };
+  const mk = (owner, list, amt, kind) => {
+    const set = { owner, amt, kind, show: false, items: [] };
+    const orderOf = kind === 'cockpit' ? { B: 0, C: 1, D: 2, A: 3 } : null;
     list.forEach((a, i) => {
       const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-      g.innerHTML = `<path fill="none"/><circle class="ring" r="${a.main ? 9 : 7}"/><circle class="dot" r="3"/><text class="code" text-anchor="middle" dy="4">${a.code}</text>`;
+      g.innerHTML = `<path fill="none" pathLength="1"/><circle class="ring" r="${a.main ? 9 : 7}"/><circle class="dot" r="3"/><text class="code" text-anchor="middle" dy="4">${a.code}</text>`;
       if (a.main) g.classList.add('main');
       callSvg.appendChild(g);
       const el = document.createElement('div');
       el.className = 'cl-label';
       el.innerHTML = `<div class="t">${a.code} · ${a.tag}</div><div class="n">${a.name}</div>`;
       callLayer.appendChild(el);
-      set.items.push({ a, g, path: g.querySelector('path'), ring: g.querySelector('.ring'), dot: g.querySelector('.dot'), code: g.querySelector('.code'), el, up: i % 2 === 0, p: new THREE.Vector3(...a.p) });
+      const path = g.querySelector('path');
+      path.setAttribute('pathLength', '1');
+      set.items.push({
+        a, g, path, ring: g.querySelector('.ring'), dot: g.querySelector('.dot'), code: g.querySelector('.code'), el,
+        up: i % 2 === 0, p: new THREE.Vector3(...a.p), order: orderOf ? (orderOf[a.code] ?? i) : i, reveal: 0, pulsed: false,
+      });
     });
     CALL_SETS.push(set);
   };
-  mk(engine.root, engine.anchors, () => S.cut);
-  mk(cockpit.root, cockpit.anchors.map((a) => ({ ...a })), () => S.nose);
+  mk(engine.root, engine.anchors, () => S.cut, 'engine');
+  mk(cockpit.root, cockpit.anchors.map((a) => ({ ...a })), () => S.nose, 'cockpit');
+}
+function syncCallouts(set, k) {
+  const show = k > 0.55 && ready;
+  if (set.show === show) return;
+  set.show = show;
+  const ordered = [...set.items].sort((a, b) => a.order - b.order);
+  const seq = show ? ordered : [...ordered].reverse();
+  const mobile = motion.mobile();
+  const gap = (show ? motion.staggerCall : motion.staggerCall * 0.5) * (mobile ? 0.65 : 1);
+  const dur = reduced ? motion.dur.fade : (show ? motion.dur.m : motion.dur.s) * (mobile ? 0.85 : 1);
+  if (!show) seq.forEach((it) => { it.pulsed = false; it.dot.classList.remove('is-pulse'); });
+  seq.forEach((it, n) => {
+    gsap.to(it, {
+      reveal: show ? 1 : 0,
+      duration: dur,
+      delay: reduced ? 0 : n * gap,
+      ease: reduced ? 'none' : (show ? motion.ease.out : motion.ease.in),
+      overwrite: true,
+    });
+  });
 }
 const proj = new THREE.Vector3();
 function updateCallouts() {
   const w = window.innerWidth, h = window.innerHeight;
   const panelRight = w >= 1000 ? Math.min(w * 0.4, 560) : 0;
+  const slidePx = reduced ? 0 : motion.y(6);
   for (const set of CALL_SETS) {
     const k = set.amt();
-    const show = k > 0.6 && ready;
-    const op = THREE.MathUtils.clamp((k - 0.6) / 0.4, 0, 1);
-    set.items.forEach((it, i) => {
+    syncCallouts(set, k);
+    const alive = k > 0.45 || set.items.some((it) => it.reveal > 0.02);
+    set.items.forEach((it) => {
       it.vis = false;
-      if (!show) { it.g.style.display = 'none'; it.el.style.display = 'none'; return; }
+      if (!alive) { it.g.style.display = 'none'; it.el.style.display = 'none'; return; }
       proj.copy(it.p).applyMatrix4(set.owner.matrixWorld).project(camera);
       const ax = (proj.x * 0.5 + 0.5) * w, ay = (-proj.y * 0.5 + 0.5) * h;
       const off = proj.z > 1 || ax < -20 || ax > w + 20 || ay < -20 || ay > h + 20;
-      it.g.style.display = off ? 'none' : ''; it.g.style.opacity = op;
+      const draw = it.reveal;
+      it.g.style.display = off || draw <= 0.001 ? 'none' : '';
+      it.g.style.opacity = reduced ? String(it.reveal) : '1';
       it.ring.setAttribute('cx', ax); it.ring.setAttribute('cy', ay); it.dot.setAttribute('cx', ax); it.dot.setAttribute('cy', ay);
       it.code.setAttribute('x', ax); it.code.setAttribute('y', ay - 14);
-      if (w < 1000 || off) { it.el.style.display = 'none'; it.path.setAttribute('d', ''); return; }
+      if (!reduced && it.reveal > 0.55 && set.show && !it.pulsed) {
+        it.pulsed = true;
+        it.dot.classList.remove('is-pulse');
+        void it.dot.getBoundingClientRect();
+        it.dot.classList.add('is-pulse');
+      }
+      if (w < 1000 || off) { it.el.style.display = 'none'; it.path.setAttribute('d', ''); it.path.style.strokeDashoffset = '1'; return; }
       it.code.style.display = 'none';
       it.ax = ax; it.ay = ay; it.vis = true;
     });
@@ -518,8 +698,13 @@ function updateCallouts() {
           pts = `M${it.ax},${it.ay} L${exx},${exy} L${exx},${ey} L${tx},${ey}`;
         }
         it.path.setAttribute('d', pts);
-        it.el.style.display = ''; it.el.style.opacity = op;
-        it.el.style.transform = `translate(${lx}px, ${ey}px) translateY(-50%)`;
+        const line = reduced ? 1 : Math.min(1, it.reveal / 0.55);
+        const len = it.path.getTotalLength() || 1;
+        it.path.style.strokeDasharray = String(len);
+        it.path.style.strokeDashoffset = String(len * (reduced ? 0 : 1 - line));
+        const textIn = reduced ? it.reveal : Math.max(0, (it.reveal - 0.62) / 0.38);
+        it.el.style.display = ''; it.el.style.opacity = String(textIn);
+        it.el.style.transform = `translate(${lx}px, ${ey}px) translateY(-50%) translateX(${(1 - it.reveal) * slidePx}px)`;
       });
     });
   }
@@ -554,6 +739,13 @@ function resize() {
   lensFov = -1;
   camera.updateProjectionMatrix();
   needsRender = true;
+  const nowMobile = motion.mobile();
+  if (nowMobile !== motionMobile) {
+    motionMobile = nowMobile;
+    if (!reduced) setupScroll();
+  }
+  slideMark(active);
+  if (NUMS[active]) rollOdo(bigCols, NUMS[active], false);
 }
 window.addEventListener('resize', resize);
 
@@ -569,6 +761,84 @@ function jumpTo(i) {
     canvas.classList.remove('is-fading');
   }, 180);
 }
+const intro = { k: reduced ? 1 : 0 };
+let heroPlayed = false;
+let motionMobile = motion.mobile();
+function showHeroFinal() {
+  gsap.killTweensOf(intro);
+  gsap.killTweensOf('.eyebrow__in, .hero .mask-inner, .hero .lead, .hero .btn');
+  intro.k = 1;
+  gsap.set('.eyebrow__in', { opacity: 1, letterSpacing: '0.18em' });
+  gsap.set('.hero .mask-inner', { yPercent: 0 });
+  gsap.set('.hero .lead', { autoAlpha: 1, y: 0 });
+  gsap.set('.hero .btn', { autoAlpha: 1 });
+  heroPlayed = true;
+}
+function parkHero() {
+  gsap.set('.eyebrow__in', { opacity: 0, letterSpacing: '0.3em' });
+  gsap.set('.hero .mask-inner', { yPercent: 110 });
+  gsap.set('.hero .lead', { autoAlpha: 0, y: motion.y(12) });
+  gsap.set('.hero .btn', { autoAlpha: 0 });
+}
+function playHero() {
+  if (heroPlayed) return;
+  heroPlayed = true;
+  if (reduced) { showHeroFinal(); return; }
+  const btn = document.querySelector('.hero .btn');
+  if (tl.time() > 0.001) intro.k = 1;
+  else gsap.to(intro, { k: 1, duration: motion.dur.l, ease: motion.ease.out, overwrite: true });
+  gsap.timeline({ defaults: { ease: motion.ease.out } })
+    .fromTo('.eyebrow__in', { opacity: 0, letterSpacing: '0.3em' }, { opacity: 1, letterSpacing: '0.18em', duration: motion.dur.m }, 0)
+    .fromTo('.hero .mask-inner', { yPercent: 110 }, { yPercent: 0, duration: motion.dur.l, stagger: 0.09 }, 0.08)
+    .fromTo('.hero .lead', { autoAlpha: 0, y: motion.y(12) }, { autoAlpha: 1, y: 0, duration: motion.dur.m }, 0.4)
+    .fromTo(btn, { autoAlpha: 0 }, { autoAlpha: 1, duration: motion.dur.s }, 0.82)
+    .add(() => btn?.querySelector('svg')?.classList.add('is-nudge'), 0.82 + motion.dur.s);
+}
+function finishLoader(ok) {
+  const done = () => {
+    loader.classList.add('is-done');
+    ScrollTrigger.refresh();
+    if (ok && !reduced) playHero();
+    else showHeroFinal();
+  };
+  loader.style.pointerEvents = 'none';
+  if (ok && !reduced) parkHero();
+  if (reduced || !ok) gsap.to(loader, { autoAlpha: 0, duration: motion.dur.fade, onComplete: done });
+  else {
+    showProgress(100);
+    gsap.fromTo(loader, { clipPath: 'inset(0% 0% 0% 0%)' }, { clipPath: 'inset(0% 0% 100% 0%)', duration: motion.dur.veil, ease: motion.ease.inOut, onComplete: done });
+  }
+}
+function mountPanel(section) {
+  const panel = section.querySelector('.panel');
+  if (!panel) return;
+  const num = panel.querySelector('.sec-num');
+  const title = panel.querySelector('.mask-inner');
+  const desc = panel.querySelector('.p-desc');
+  const chips = [...panel.querySelectorAll('.chips li')].slice(0, 8);
+  const rest = [...panel.querySelectorAll(':scope > .origin, :scope > .panel__nav, :scope > .actions')];
+  const yIn = motion.y(10);
+  const yOut = motion.y(-8);
+  const tlP = gsap.timeline({
+    defaults: { ease: 'none' },
+    scrollTrigger: { trigger: section, start: 'top 92%', end: 'bottom 8%', scrub: true },
+  });
+  tlP.fromTo(panel, { autoAlpha: 0, y: yIn }, { autoAlpha: 1, y: 0, duration: 0.12 }, 0);
+  if (num) tlP.fromTo(num, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.08 }, 0.02);
+  if (title) {
+    tlP.set(title, { yPercent: 110 }, 0);
+    tlP.to(title, { yPercent: 0, duration: 0.14 }, 0.05);
+  }
+  if (desc) tlP.fromTo(desc, { autoAlpha: 0, y: motion.y(8) }, { autoAlpha: 1, y: 0, duration: 0.1 }, 0.14);
+  chips.forEach((chip, n) => {
+    tlP.fromTo(chip, { autoAlpha: 0, y: motion.y(6) }, { autoAlpha: 1, y: 0, duration: 0.06 }, 0.2 + n * 0.018);
+  });
+  if (rest.length) {
+    tlP.fromTo(rest, { autoAlpha: 0, y: motion.y(4) }, { autoAlpha: 1, y: 0, duration: 0.08 }, 0.22 + chips.length * 0.018);
+  }
+  tlP.fromTo(panel, { autoAlpha: 1, y: 0 }, { autoAlpha: 0, y: yOut, duration: 0.12, immediateRender: false }, 0.56);
+  if (motion.blurOK()) tlP.fromTo(panel, { filter: 'none' }, { filter: 'blur(4px)', duration: 0.12, immediateRender: false }, 0.56);
+}
 function setupScroll() {
   ScrollTrigger.getAll().forEach((s) => s.kill());
   master = null;
@@ -583,27 +853,37 @@ function setupScroll() {
     needsRender = true;
     return;
   }
+  // Progression linéaire, indépendante du scrub 1.1 de la timeline maître.
+  ScrollTrigger.create({
+    trigger: story, start: 'top top', end: 'bottom bottom',
+    onUpdate: (self) => setProgress(self.progress * (sections.length - 1)),
+  });
   master = ScrollTrigger.create({
     trigger: story, start: 'top top', end: 'bottom bottom',
     animation: tl, scrub: 1.1,
-    onUpdate: (self) => setProgress(self.progress * 9),
     snap: { snapTo: 1 / (sections.length - 1), duration: { min: 0.3, max: 0.9 }, delay: 0.15, ease: 'power1.inOut', inertia: false },
   });
-  // apparition discrète des panneaux
-  document.querySelectorAll('.panel, .hero').forEach((p) => {
-    gsap.fromTo(p, { autoAlpha: 0, y: 18 }, {
-      autoAlpha: 1, y: 0, duration: 0.6, ease: 'power3.out',
-      scrollTrigger: { trigger: p, start: 'top 85%', end: 'bottom 15%', toggleActions: 'play reverse play reverse' },
-    });
+  sections.forEach((section) => mountPanel(section));
+  gsap.fromTo('.credits__inner > *', { autoAlpha: 0, y: motion.y(10) }, {
+    autoAlpha: 1, y: 0, ease: 'none', stagger: motion.mobile() ? 0.03 : 0.05,
+    scrollTrigger: { trigger: '.credits', start: 'top 88%', end: 'top 42%', scrub: true },
   });
 }
 setupScroll();
+if (!renderer) showHeroFinal();
 reduceMQ.addEventListener('change', (e) => {
   reduced = e.matches;
-  gsap.set('.panel, .hero', { clearProps: 'all' });
+  fanRate = 0;
+  if (reduced) showHeroFinal();
+  gsap.set('.panel, .panel .mask-inner, .panel .sec-num, .panel .p-desc, .panel .chips li, .panel .origin, .panel .panel__nav, .panel .actions, .credits__inner > *', { clearProps: 'all' });
   active = -1;
   setupScroll();
   ScrollTrigger.refresh();
+});
+document.fonts.ready.then(() => {
+  if (NUMS[active]) rollOdo(bigCols, NUMS[active], false);
+  ScrollTrigger.refresh();
+  slideMark(active);
 });
 
 // liens internes : défilement doux (instantané si mouvement réduit)
