@@ -1,11 +1,9 @@
-import '@fontsource/sora/latin-200.css';
-import '@fontsource/sora/latin-300.css';
-import '@fontsource/sora/latin-400.css';
-import '@fontsource/sora/latin-500.css';
-import '@fontsource/inter/latin-400.css';
-import '@fontsource/inter/latin-500.css';
-import '@fontsource/inter/latin-600.css';
-import '@fontsource/b612-mono/latin-400.css';
+import '@fontsource/space-grotesk/latin-300.css';
+import '@fontsource/space-grotesk/latin-500.css';
+import '@fontsource/ibm-plex-sans/latin-400.css';
+import '@fontsource/ibm-plex-sans/latin-500.css';
+import '@fontsource/ibm-plex-sans/latin-600.css';
+import '@fontsource/ibm-plex-mono/latin-400.css';
 import './style.css';
 
 import * as THREE from 'three';

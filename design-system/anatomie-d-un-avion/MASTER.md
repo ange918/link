@@ -246,7 +246,7 @@ Before delivering any UI code, verify:
 | Signal | --signal-400 | #FFB23E, au plus une fois par écran (ancre principale) |
 | Fantôme 3D | — | #9FC3E0, remplissage 6 %, arêtes 30 %, rim #8EC9FF |
 
-- Typo : Sora 200/300 (titres), Inter 400–600 (texte), B612 Mono (eyebrows, chips, étiquettes), auto-hébergées.
+- Typo : Space Grotesk 300/500 (titres et grandes valeurs), IBM Plex Sans 400–600 (texte), IBM Plex Mono 400 (eyebrows, chips, étiquettes), auto-hébergées, OFL 1.1.
 - Composants : panneau rayon 6 px, flou 18 px, coins repères 10 px en accent ; eyebrow « NN / 07 — Kicker » ; chips mono carrées ; boutons ronds 44 px précédent/suivant ; progression à 7 segments (7 traits sous la barre sur mobile).
 - Motion (niveau 9) : timeline maître en scrub, power3.inOut, pas de rotation ni de flottement en mouvement réduit.
 - Contenu : aucun chiffre non sourcé. Les noms de travail « AXIAL » et « AX-350 » ne sont pas utilisés (titre neutre).
