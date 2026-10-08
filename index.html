@@ -1,172 +1,106 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="FASH'LINK - La plateforme qui connecte stylistes professionnels et jeunes talents dans l'industrie de la mode. Découvrez, collaborez et créez ensemble.">
-    <meta name="keywords" content="fash'link, styliste, mode, talents, fashion, collaboration, plateforme mode">
-    <title>FASH'LINK - Connectez Stylistes et Jeunes Talents</title>
-    <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Anatomie d'un long-courrier · Démo 3D interactive</title>
+  <meta name="description" content="Démo 3D interactive : un avion de ligne présenté pièce par pièce au défilement, avec poste de pilotage et moteur en vue écorchée." />
+  <meta name="theme-color" content="#05070A" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 26 26' fill='none'%3E%3Ccircle cx='13' cy='13' r='12' stroke='%23EEF2F6' stroke-opacity='.5'/%3E%3Cpath d='M4 15.5 L13 6 L22 15.5 M13 6 V21 M9 21 H17' stroke='%235CC8FF' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
 </head>
 <body>
-    <header>
-        <nav class="container">
-            <div class="navbar">
-                <a href="index.html" class="logo">FASH'LINK</a>
-                <ul class="nav-menu">
-                    <li><a href="index.html"><i class='bx bx-home'></i> Accueil</a></li>
-                    <li><a href="a-propos.html"><i class='bx bx-info-circle'></i> À propos</a></li>
-                    <li><a href="fonctionnalités.html"><i class='bx bx-cog'></i> Fonctionnalités</a></li>
-                    <li><a href="styliste.html"><i class='bx bx-user'></i> Styliste</a></li>
-                    <li><a href="jeune-styliste.html"><i class='bx bx-scissors'></i> Jeune Styliste</a></li>
-                    <li><a href="galerie.html"><i class='bx bx-images'></i> Galerie</a></li>
-                    <li><a href="contact.html"><i class='bx bx-envelope'></i> Contact</a></li>
-                </ul>
-                <div class="hamburger">
-                    <i class='bx bx-menu'></i>
-                </div>
-            </div>
-        </nav>
-    </header>
+  <a class="skip" href="#fuselage">Aller au premier chapitre</a>
 
-    <main>
-        <section class="hero hero-index">
-            <div class="container">
-                <h1>La plateforme qui connecte stylistes et jeunes talents</h1>
-                <p>Découvrez, collaborez et créez ensemble dans l'univers de la mode</p>
-                <div class="cta-buttons">
-                    <a href="styliste.html" class="btn">Je suis Styliste</a>
-                    <a href="jeune-styliste.html" class="btn btn-outline">Je suis Jeune Styliste</a>
-                </div>
-            </div>
-        </section>
+  <div class="stage" aria-hidden="true">
+    <canvas id="scene"></canvas>
+    <div class="vignette"></div>
+    <div class="callouts" id="callouts"><svg></svg></div>
+    <p class="bignum" id="bigNum"></p>
+  </div>
 
-        <section class="concept">
-            <div class="container">
-                <h2>Notre Concept</h2>
-                <p>FASH'LINK est la première plateforme dédiée à la mise en relation entre stylistes professionnels et jeunes talents émergents. Nous créons un écosystème où la créativité rencontre l'opportunité, où l'expérience guide le potentiel, et où chaque collaboration devient une opportunité de croissance mutuelle dans l'industrie de la mode.</p>
-            </div>
-        </section>
+  <div class="loader" id="loader" role="status" aria-live="polite">
+    <div class="loader__inner">
+      <svg class="brandmark" viewBox="0 0 26 26" aria-hidden="true"><circle cx="13" cy="13" r="12"/><path d="M4 15.5 L13 6 L22 15.5 M13 6 V21 M9 21 H17"/></svg>
+      <p class="loader__title">Anatomie d'un long-courrier</p>
+      <div class="loader__bar"><span id="loaderBar"></span></div>
+      <p class="loader__text" id="loaderText">Chargement du modèle 3D…</p>
+    </div>
+  </div>
 
-        <section class="steps">
-            <div class="container">
-                <h2 class="section-title">Comment ça marche</h2>
-                <div class="grid-3">
-                    <div class="step-item">
-                        <div class="step-number">1</div>
-                        <i class='bx bx-edit' style="font-size: 48px; margin-bottom: 20px;"></i>
-                        <h3>Inscrivez-vous</h3>
-                        <p>Créez votre profil en quelques minutes et présentez votre univers créatif à notre communauté.</p>
-                    </div>
-                    <div class="step-item">
-                        <div class="step-number">2</div>
-                        <i class='bx bxs-badge-check' style="font-size: 48px; margin-bottom: 20px;"></i>
-                        <h3>Validation</h3>
-                        <p>Notre équipe vérifie et valide votre profil pour garantir la qualité de notre plateforme.</p>
-                    </div>
-                    <div class="step-item">
-                        <div class="step-number">3</div>
-                        <i class='bx bx-link-external' style="font-size: 48px; margin-bottom: 20px;"></i>
-                        <h3>Connectez-vous</h3>
-                        <p>Découvrez des opportunités, collaborez et développez votre réseau professionnel.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+  <header class="topbar">
+    <a class="brand" href="#hero" aria-label="Anatomie, retour au début">
+      <svg class="brandmark" viewBox="0 0 26 26" aria-hidden="true"><circle cx="13" cy="13" r="12"/><path d="M4 15.5 L13 6 L22 15.5 M13 6 V21 M9 21 H17"/></svg>
+      <span>Anatomie</span>
+    </a>
+    <p class="topbar__meta" aria-live="polite"><span class="topbar__num" id="chapterNum"></span><span id="chapterLabel">Vue d'ensemble</span></p>
+    <a class="chip chip--link" href="#credits"><span class="dot" aria-hidden="true"></span>Crédits</a>
+  </header>
 
-        <hr class="section-divider">
+  <nav class="progress" aria-label="Chapitres">
+    <ol id="progress"></ol>
+  </nav>
 
-        <section>
-            <div class="container">
-                <h2 class="section-title">Pourquoi choisir FASH'LINK</h2>
-                <div class="grid-2">
-                    <div class="icon-box">
-                        <i class='bx bx-shield-quarter'></i>
-                        <h3>Profils Vérifiés</h3>
-                        <p>Tous les profils sont validés manuellement par notre équipe pour garantir l'authenticité et le professionnalisme.</p>
-                    </div>
-                    <div class="icon-box">
-                        <i class='bx bx-network-chart'></i>
-                        <h3>Réseau de Qualité</h3>
-                        <p>Accédez à un réseau exclusif de professionnels et de talents triés sur le volet dans le monde de la mode.</p>
-                    </div>
-                    <div class="icon-box">
-                        <i class='bx bx-briefcase'></i>
-                        <h3>Opportunités</h3>
-                        <p>Découvrez des missions, des collaborations et des projets adaptés à votre profil et vos compétences.</p>
-                    </div>
-                    <div class="icon-box">
-                        <i class='bx bx-rocket'></i>
-                        <h3>Croissance</h3>
-                        <p>Développez votre carrière grâce à des connexions stratégiques et des collaborations enrichissantes.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+  <main id="story">
+    <section class="chapter chapter--hero" id="hero" data-index="0">
+      <div class="hero">
+        <p class="eyebrow">Démo 3D interactive</p>
+        <h1>Anatomie<br />d'un long-courrier</h1>
+        <p class="lead">Faites défiler : l'avion se démonte pièce par pièce, ouvre son poste de pilotage et son moteur, puis se réassemble.</p>
+        <a class="btn btn--primary" href="#eclate">
+          Commencer
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3v10M4 9l4 4 4-4"/></svg>
+        </a>
+      </div>
+    </section>
 
-        <section>
-            <div class="container">
-                <h2 class="section-title">Découvrez FASH'LINK en vidéo</h2>
-                <div class="video-container">
-                    <div class="video-placeholder">
-                        <i class='bx bx-play-circle'></i>
-                        <p>Vidéo de présentation FASH'LINK</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+    <section class="chapter" id="eclate" data-index="1">
+      <article class="panel">
+        <span class="tick tl"></span><span class="tick tr"></span><span class="tick bl"></span><span class="tick br"></span>
+        <p class="sec-num">Vue éclatée</p>
+        <h2>Treize pièces, un seul appareil</h2>
+        <p class="p-desc">Le modèle 3D a été découpé en pièces distinctes : fuselage, nez, ailes, mâts, nacelles, soufflantes, dérive et plans horizontaux. Le train d'atterrissage, la cabine, le poste de pilotage et le moteur écorché ont été ajoutés en modélisation procédurale.</p>
+      </article>
+    </section>
 
-        <section class="testimonials">
-            <div class="container">
-                <h2 class="section-title">Ce qu'ils disent de nous</h2>
-                <div class="testimonials-grid">
-                    <div class="testimonial-card fade-in">
-                        <div class="testimonial-avatar">
-                            <i class='bx bx-user'></i>
-                        </div>
-                        <p class="testimonial-text">"FASH'LINK m'a permis de trouver des assistants talentueux pour mes projets. Le processus de validation garantit des profils de qualité. Une plateforme indispensable!"</p>
-                        <p class="testimonial-author">Sophie Laurent</p>
-                        <p class="testimonial-role">Styliste - Paris</p>
-                    </div>
-                    <div class="testimonial-card fade-in">
-                        <div class="testimonial-avatar">
-                            <i class='bx bx-user'></i>
-                        </div>
-                        <p class="testimonial-text">"Grâce à FASH'LINK, j'ai décroché ma première collaboration avec un styliste renommé. C'était le tremplin dont j'avais besoin pour lancer ma carrière."</p>
-                        <p class="testimonial-author">Lucas Martin</p>
-                        <p class="testimonial-role">Jeune Styliste - Lyon</p>
-                    </div>
-                    <div class="testimonial-card fade-in">
-                        <div class="testimonial-avatar">
-                            <i class='bx bx-user'></i>
-                        </div>
-                        <p class="testimonial-text">"Interface intuitive, profils vérifiés, et une communauté passionnée. FASH'LINK facilite vraiment les connexions dans l'industrie de la mode."</p>
-                        <p class="testimonial-author">Emma Rousseau</p>
-                        <p class="testimonial-role">Designer - Marseille</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
+    <!-- chapitres injectés depuis src/content.js -->
+    <div id="chapters"></div>
 
-    <footer>
-        <div class="container">
-            <div class="social-links">
-                <a href="#" aria-label="Instagram"><i class='bx bxl-instagram'></i></a>
-                <a href="#" aria-label="Facebook"><i class='bx bxl-facebook'></i></a>
-                <a href="#" aria-label="TikTok"><i class='bx bxl-tiktok'></i></a>
-            </div>
-            <p>&copy; 2025 FASH'LINK. Tous droits réservés.</p>
+    <section class="chapter chapter--final" id="final" data-index="9">
+      <article class="panel panel--final">
+        <span class="tick tl"></span><span class="tick tr"></span><span class="tick bl"></span><span class="tick br"></span>
+        <p class="sec-num">Réassemblage</p>
+        <h2>Prêt pour le départ</h2>
+        <p class="p-desc">Chaque pièce a retrouvé sa place : la structure, la voilure, la propulsion et les commandes forment de nouveau un seul appareil.</p>
+        <div class="actions">
+          <a class="btn btn--primary" href="#hero">
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 8a5.5 5.5 0 1 0 1.8-4.1L2.5 5.5"/><path d="M2.5 2.5v3h3"/></svg>
+            Revoir depuis le début
+          </a>
+          <a class="btn btn--ghost" href="#credits">Crédits</a>
         </div>
-    </footer>
+      </article>
+    </section>
+  </main>
 
-    <button id="back-to-top" class="back-to-top" aria-label="Retour en haut">
-        <i class='bx bx-up-arrow-alt'></i>
-    </button>
+  <footer class="credits" id="credits">
+    <div class="credits__inner">
+      <h2>Crédits &amp; sources</h2>
+      <ul>
+        <li><strong>Modèle 3D</strong> « A350 » (variante sans logo) par <a href="https://github.com/amvlab/aircraft-models" rel="noopener">amvlab</a>, sous licence <a href="https://creativecommons.org/licenses/by/4.0/deed.fr" rel="noopener">CC BY 4.0</a>. Modifications : découpage en pièces nommées, subdivision de Loop du nez et des nacelles, normales recalculées, recentrage, compression meshopt et texture WebP.</li>
+        <li><strong>Poste de pilotage, moteur écorché, train d'atterrissage et cabine</strong> : modélisation procédurale en Three.js pour cette démo, à titre d'illustration. Proportions approximatives ; les écrans du cockpit sont des visuels génériques sans données.</li>
+        <li><strong>Subdivision</strong> : <a href="https://github.com/stevinz/three-subdivide" rel="noopener">three-subdivide</a> (MIT), utilisée hors ligne lors de la préparation du modèle.</li>
+        <li><strong>Direction visuelle</strong> : guide de style « Veille design » (palette nuit, silhouettes fantômes, grille au sol).</li>
+        <li><strong>Polices</strong> Sora, Inter et B612 Mono, auto-hébergées, SIL Open Font License.</li>
+        <li><strong>Stack</strong> : Vite, Three.js, GSAP ScrollTrigger.</li>
+      </ul>
+      <p class="credits__note">Démo non affiliée aux constructeurs aéronautiques. Textes à visée pédagogique et générale, sans valeurs chiffrées.</p>
+    </div>
+  </footer>
 
-    <script src="script.js"></script>
+  <div class="fallback" id="fallback" hidden>
+    <p>La 3D n'a pas pu démarrer sur cet appareil (WebGL indisponible). Le contenu texte reste accessible ci-dessous.</p>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
 </body>
 </html>
