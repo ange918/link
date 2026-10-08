@@ -47,49 +47,70 @@ export function buildTurbofan() {
     glow: new THREE.MeshBasicMaterial({ color: 0xff9a3c, toneMapped: false, side: THREE.DoubleSide }),
     dark: new THREE.MeshPhysicalMaterial({ color: 0x1d222a, roughness: 0.5, metalness: 0.6 }),
   };
+  // 0 coque, 1 soufflante, 2 compresseur BP, 3 compresseur HP, 4 combustion, 5 turbines + tuyère.
+  // Un clone par maillage : les matériaux d'origine sont partagés entre plusieurs étages.
+  const staged = [[], [], [], [], [], []];
+  const stageMaterial = (base, stage) => {
+    const mat = base.clone();
+    if (mat.emissive) {
+      mat.emissive = new THREE.Color(0x9ad7ff);
+      mat.emissiveIntensity = 0;
+    }
+    const baseOpacity = mat.opacity ?? 1;
+    mat.transparent = true;
+    mat.opacity = 0;
+    mat.depthWrite = false;
+    staged[stage].push({ mat, base: baseOpacity, transparent: true });
+    return mat;
+  };
   const root = new THREE.Group(); root.name = 'turbofan';
   const statics = new THREE.Group(), lp = new THREE.Group(), hp = new THREE.Group();
   root.add(statics, lp, hp);
 
   // nacelle (demi-coque) : extérieur + paroi intérieure
-  statics.add(lathe([[1.62, 4.25], [1.86, 4.05], [1.98, 3.4], [2.0, 2.2], [1.94, 0.6], [1.8, -0.8], [1.58, -1.9]], M.paint));
-  statics.add(lathe([[1.62, 4.25], [1.56, 3.9], [1.6, 3.2], [1.6, 2.4], [1.55, 1.2], [1.45, -0.6], [1.38, -1.9]], M.liner));
+  statics.add(lathe([[1.62, 4.25], [1.86, 4.05], [1.98, 3.4], [2.0, 2.2], [1.94, 0.6], [1.8, -0.8], [1.58, -1.9]], stageMaterial(M.paint, 0)));
+  statics.add(lathe([[1.62, 4.25], [1.56, 3.9], [1.6, 3.2], [1.6, 2.4], [1.55, 1.2], [1.45, -0.6], [1.38, -1.9]], stageMaterial(M.liner, 0)));
   // carter de soufflante (anneau métallique visible dans la coupe)
-  statics.add(lathe([[1.6, 3.3], [1.6, 2.5]], M.casing));
+  statics.add(lathe([[1.6, 3.3], [1.6, 2.5]], stageMaterial(M.casing, 0)));
   // capot du cœur (demi) et tuyère primaire
-  statics.add(lathe([[0.62, 2.35], [0.98, 1.9], [1.02, 0.8], [1.05, -0.5], [1.08, -1.8], [0.98, -3.1], [0.82, -3.9]], M.paint));
-  statics.add(lathe([[0.6, 2.2], [0.62, 1.6], [0.5, 0.95], [0.44, 0.2], [0.46, -0.1]], M.casing)); // conduit compresseur
-  statics.add(lathe([[0.55, -0.15], [0.74, -0.35], [0.78, -1.05], [0.6, -1.3]], M.hot)); // chemise de combustion
-  statics.add(lathe([[0.62, -1.35], [0.7, -1.7], [0.84, -2.2], [0.92, -3.0], [0.86, -3.85]], M.hot)); // carter turbine
-  // flamme : anneau lumineux dans la chambre
-  const flame = new THREE.Mesh(new THREE.TorusGeometry(0.62, 0.07, 12, 64, Math.PI), M.glow);
-  flame.rotation.y = Math.PI / 2; flame.position.x = -0.7; statics.add(flame);
-  for (const x of [-0.45, -0.95]) { const f2 = flame.clone(); f2.position.x = x; f2.scale.setScalar(0.92); statics.add(f2); }
+  statics.add(lathe([[0.62, 2.35], [0.98, 1.9], [1.02, 0.8], [1.05, -0.5], [1.08, -1.8], [0.98, -3.1], [0.82, -3.9]], stageMaterial(M.paint, 0)));
+  statics.add(lathe([[0.6, 2.2], [0.62, 1.6], [0.5, 0.95], [0.44, 0.2], [0.46, -0.1]], stageMaterial(M.casing, 3))); // conduit compresseur
+  statics.add(lathe([[0.55, -0.15], [0.74, -0.35], [0.78, -1.05], [0.6, -1.3]], stageMaterial(M.hot, 4))); // chemise de combustion
+  statics.add(lathe([[0.62, -1.35], [0.7, -1.7], [0.84, -2.2], [0.92, -3.0], [0.86, -3.85]], stageMaterial(M.hot, 5))); // carter turbine
+  // flamme : anneau lumineux dans la chambre (géométrie partagée, matériau par anneau)
+  const flameGeo = new THREE.TorusGeometry(0.62, 0.07, 12, 64, Math.PI);
+  const addFlame = (x, scale = 1) => {
+    const flame = new THREE.Mesh(flameGeo, stageMaterial(M.glow, 4));
+    flame.rotation.y = Math.PI / 2; flame.position.x = x; flame.scale.setScalar(scale); statics.add(flame);
+  };
+  addFlame(-0.7);
+  addFlame(-0.45, 0.92);
+  addFlame(-0.95, 0.92);
   // injecteurs
   for (let i = 0; i < 9; i++) {
     const a = Math.PI * (i / 8);
-    const inj = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.025, 0.3, 8), M.dark);
+    const inj = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.025, 0.3, 8), stageMaterial(M.dark, 4));
     inj.rotation.z = Math.PI / 2; inj.position.set(-0.2, Math.sin(a) * 0.62, Math.cos(a) * 0.62); statics.add(inj);
   }
   // cône d'éjection
-  statics.add(lathe([[0.001, -5.0], [0.22, -4.5], [0.42, -3.7], [0.5, -3.0], [0.48, -2.6]], M.hot, false, 48));
+  statics.add(lathe([[0.001, -5.0], [0.22, -4.5], [0.42, -3.7], [0.5, -3.0], [0.48, -2.6]], stageMaterial(M.hot, 5), false, 48));
 
   // attelage basse pression : cône, soufflante, compresseur BP, turbine BP
-  const spinner = lathe([[0.001, 3.55], [0.18, 3.45], [0.38, 3.2], [0.52, 2.9], [0.58, 2.6]], M.titanium, false, 48);
+  const spinner = lathe([[0.001, 3.55], [0.18, 3.45], [0.38, 3.2], [0.52, 2.9], [0.58, 2.6]], stageMaterial(M.titanium, 1), false, 48);
   lp.add(spinner);
-  const fan = bladeRing(20, 0.5, 1.56, 0.62, 0.05, 0.9, M.fanBlade); fan.position.x = 2.85; lp.add(fan);
+  const fan = bladeRing(20, 0.5, 1.56, 0.62, 0.05, 0.9, stageMaterial(M.fanBlade, 1)); fan.position.x = 2.85; lp.add(fan);
   const lpcX = [2.2, 1.95, 1.7];
-  lpcX.forEach((x, i) => { const r = bladeRing(36, 0.62, 0.95 - i * 0.04, 0.16, 0.025, 0.5, M.titanium); r.position.x = x; lp.add(r); });
+  lpcX.forEach((x, i) => { const r = bladeRing(36, 0.62, 0.95 - i * 0.04, 0.16, 0.025, 0.5, stageMaterial(M.titanium, 2)); r.position.x = x; lp.add(r); });
   const lptX = [-2.15, -2.45, -2.75, -3.05, -3.35];
-  lptX.forEach((x, i) => { const r = bladeRing(56, 0.5, 0.78 + i * 0.03, 0.14, 0.02, 0.4, M.hot); r.position.x = x; lp.add(r); });
-  const lpShaft = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 6.0, 20), M.casing); lpShaft.rotation.z = Math.PI / 2; lpShaft.position.x = -0.2; lp.add(lpShaft);
+  lptX.forEach((x, i) => { const r = bladeRing(56, 0.5, 0.78 + i * 0.03, 0.14, 0.02, 0.4, stageMaterial(M.hot, 5)); r.position.x = x; lp.add(r); });
+  const lpShaft = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 6.0, 20), stageMaterial(M.casing, 2)); lpShaft.rotation.z = Math.PI / 2; lpShaft.position.x = -0.2; lp.add(lpShaft);
 
   // attelage haute pression : compresseur HP, turbine HP
   const hpcX = [1.35, 1.15, 0.95, 0.77, 0.6, 0.45, 0.32, 0.2];
-  hpcX.forEach((x, i) => { const r = bladeRing(48, 0.28, 0.58 - i * 0.017, 0.1, 0.018, 0.4, M.titanium); r.position.x = x; hp.add(r); });
+  hpcX.forEach((x, i) => { const r = bladeRing(48, 0.28, 0.58 - i * 0.017, 0.1, 0.018, 0.4, stageMaterial(M.titanium, 3)); r.position.x = x; hp.add(r); });
   const hptX = [-1.5, -1.75];
-  hptX.forEach((x) => { const r = bladeRing(60, 0.3, 0.66, 0.13, 0.025, 0.3, M.hot); r.position.x = x; hp.add(r); });
-  const hpDrum = new THREE.Mesh(new THREE.CylinderGeometry(0.27, 0.29, 3.4, 32), M.casing);
+  hptX.forEach((x) => { const r = bladeRing(60, 0.3, 0.66, 0.13, 0.025, 0.3, stageMaterial(M.hot, 5)); r.position.x = x; hp.add(r); });
+  const hpDrum = new THREE.Mesh(new THREE.CylinderGeometry(0.27, 0.29, 3.4, 32), stageMaterial(M.casing, 3));
   hpDrum.rotation.z = Math.PI / 2; hpDrum.position.x = -0.2; hp.add(hpDrum);
 
   // ouverture tournée vers +Z : les demi-lathes couvrent par défaut un côté, on les oriente
@@ -105,5 +126,5 @@ export function buildTurbofan() {
     { code: 'E', name: 'Turbines HP et BP', tag: 'Détente', desc: 'Entraînent compresseurs et soufflante', p: [-2.4, 0.2, 0.5] },
     { code: 'F', name: 'Tuyère', tag: 'Échappement', desc: 'Éjecte les gaz chauds', p: [-4.1, 0.15, 0.3] },
   ];
-  return { root, lp, hp, materials: Object.values(M), anchors };
+  return { root, lp, hp, materials: staged.flat().map((s) => s.mat), staged, anchors };
 }
