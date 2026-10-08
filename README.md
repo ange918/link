@@ -4,7 +4,7 @@ Démo de site premium : un avion de ligne est présenté pièce par pièce au d�
 
 Nouveautés de la V2 :
 
-- **Direction visuelle « Veille design »** : palette nuit (#05070A / #0A0E14 / #111823), un seul accent horizon #5CC8FF, ambre #FFB23E réservé à l'ancre principale ; Sora (titres), Inter (texte) et B612 Mono (données) ; panneaux à coins repères, progression à 7 segments ; silhouettes fantômes #9FC3E0 (remplissage 6 %, arêtes 30 %) avec liseré fresnel bleu ; grille au sol, brouillard, exposition 1,2 et quatre lumières (key chaude, rim froide, hémisphère, ponctuelle d'accent sur la pièce présentée). La caméra, les distances d'éclatement et les easings suivent le guide.
+- **Direction visuelle « Veille design »** : palette nuit (#05070A / #0A0E14 / #111823), un seul accent horizon #5CC8FF, ambre #FFB23E réservé à l'ancre principale ; Space Grotesk (titres), IBM Plex Sans (texte) et IBM Plex Mono (données) ; panneaux à coins repères, progression à 7 segments ; silhouettes fantômes #9FC3E0 (remplissage 6 %, arêtes 30 %) avec liseré fresnel bleu ; grille au sol, brouillard, exposition 1,2 et quatre lumières (key chaude, rim froide, hémisphère, ponctuelle d'accent sur la pièce présentée). La caméra, les distances d'éclatement et les easings suivent le guide.
 - **Poste de pilotage** : au chapitre 02, le nez devient transparent et la caméra entre dans la cabine de pilotage. On y voit une planche de bord à écrans (textures canvas génériques de type PFD, ND, moteurs et système, **sans aucune donnée chiffrée**), deux sièges, deux mini-manches latéraux, le piédestal, le panneau supérieur et un vitrage tiré de la forme du nez. Quatre étiquettes accompagnent la vue.
 - **Moteur en vue écorchée** : au chapitre 04, la nacelle droite s'ouvre en demi-coupe, à la manière des écorchés de Masterwork. Six sections sont étiquetées : soufflante, compresseur BP, compresseur HP, chambre de combustion (ancre ambre), turbines HP et BP, tuyère. Les attelages BP et HP tournent doucement, sauf en mouvement réduit.
 - **Modèle amélioré** : subdivision de Loop du nez (1 itération) et des nacelles (2 itérations), normales recalculées avec un angle seuil de 38°, vernis et métal revus. Le fuselage n'est pas subdivisé, car sa livrée se déformait.
@@ -50,7 +50,7 @@ SUBDIV=0 npm run build:model   # même chose sans subdivision
 - Three.js 0.186 : GLTFLoader + MeshoptDecoder, RoomEnvironment (plus de HDRI à télécharger), MeshPhysicalMaterial, tone mapping ACES, shaders fresnel et grille
 - GSAP 3.15 + ScrollTrigger : une seule timeline maître en scrub anime un seul objet d'état (caméra, focale, sortie et atténuation de chaque pièce, train, nez transparent, coupe moteur, cabine). Le scroll s'aimante sur les chapitres et le retour en arrière fonctionne.
 - gltf-transform (meshopt + WebP) et three-subdivide (Loop) pour la préparation hors ligne du modèle
-- Polices auto-hébergées (@fontsource) : Sora, Inter, B612 Mono
+- Polices auto-hébergées (@fontsource) : Space Grotesk 300 et 500, IBM Plex Sans 400 à 600, IBM Plex Mono 400
 - Design system ui-ux-pro-max (`design-system/anatomie-d-un-avion/MASTER.md`, motion 9), réaligné sur la direction Veille design
 
 ## Accessibilité et performances
@@ -66,7 +66,7 @@ SUBDIV=0 npm run build:model   # même chose sans subdivision
 - **Poste de pilotage, moteur écorché, train d'atterrissage et cabine** : modélisation procédurale en Three.js pour cette démo, à titre d'illustration. Les proportions sont approximatives et les écrans sont des visuels génériques sans données.
 - **three-subdivide** par Stephens Nunnally, https://github.com/stevinz/three-subdivide, licence MIT (préparation du modèle uniquement, non incluse dans le site).
 - **Direction visuelle** : guide de style Veille design (`/workspace/avion-3d-direction`).
-- **Polices** : Sora, Inter et B612 Mono, SIL Open Font License 1.1.
+- **Polices** : Space Grotesk, IBM Plex Sans et IBM Plex Mono, SIL Open Font License 1.1.
 - Bibliothèques : Three.js (MIT), GSAP (licence standard GSAP, gratuite).
 
 Démo non affiliée aux constructeurs aéronautiques. Les textes sont généraux et pédagogiques. Aucune valeur chiffrée n'est affichée, et les noms de travail du guide (« AXIAL », « AX-350 ») ne sont pas utilisés.

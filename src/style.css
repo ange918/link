@@ -1,13 +1,13 @@
 /* Design system « Anatomie d'un long-courrier » (ui-ux-pro-max, motion 9)
    Direction visuelle Veille design : palette nuit, accent horizon unique, ambre en signal ponctuel,
-   Sora (titres) + Inter (texte) + B612 Mono (données), panneaux à coins repères. */
+   Space Grotesk (titres) + IBM Plex Sans (texte) + IBM Plex Mono (données), panneaux à coins repères. */
 :root {
   --nuit-950: #05070A; --nuit-900: #0A0E14; --nuit-800: #111823; --nuit-700: #1A2330;
   --titane-50: #EEF2F6; --acier-300: #A3AEBD; --acier-500: #7A8698;
   --horizon-400: #5CC8FF; --horizon-300: #9ADDFF; --signal-400: #FFB23E;
   --ligne: rgba(200, 214, 230, 0.14); --ligne-forte: rgba(200, 214, 230, 0.28);
   --panel-bg: rgba(10, 14, 20, 0.62); --glow: rgba(92, 200, 255, 0.35);
-  --f-display: 'Sora', system-ui, sans-serif; --f-body: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif; --f-mono: 'B612 Mono', ui-monospace, monospace;
+  --f-display: 'Space Grotesk', system-ui, sans-serif; --f-body: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif; --f-mono: 'IBM Plex Mono', ui-monospace, monospace;
   --s1: 8px; --s2: 16px; --s3: 24px; --s4: 32px; --s6: 48px; --s8: 64px; --s12: 96px;
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1); --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
   --dur-fast: 180ms; --dur: 280ms;
@@ -35,7 +35,7 @@ svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width:
 .vignette { position: absolute; inset: 0; pointer-events: none; background:
   radial-gradient(140% 100% at 50% 45%, transparent 55%, rgba(0, 0, 0, 0.55) 100%),
   linear-gradient(90deg, rgba(5, 7, 10, 0.55) 0%, rgba(5, 7, 10, 0) 40%); }
-.bignum { position: absolute; right: var(--pad-x); top: 84px; margin: 0; font-family: var(--f-display); font-weight: 200; font-size: clamp(96px, 11vw, 168px); line-height: 1; letter-spacing: -0.04em; color: rgba(200, 214, 230, 0.07); font-variant-numeric: tabular-nums; opacity: 0; transition: opacity 400ms var(--ease-out); }
+.bignum { position: absolute; right: var(--pad-x); top: 84px; margin: 0; font-family: var(--f-display); font-weight: 300; font-size: clamp(96px, 11vw, 168px); line-height: 1; letter-spacing: -0.04em; color: rgba(200, 214, 230, 0.07); font-variant-numeric: tabular-nums; opacity: 0; transition: opacity 400ms var(--ease-out); }
 .bignum.is-on { opacity: 1; }
 
 /* ---------- étiquettes projetées */
@@ -97,8 +97,9 @@ svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width:
 .chapter { position: relative; height: 100vh; display: flex; align-items: center; padding: 96px var(--pad-x) 88px; }
 .hero { max-width: 600px; }
 .eyebrow { margin: 0 0 var(--s3); font-family: var(--f-mono); font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--horizon-400); }
-h1, h2 { font-family: var(--f-display); font-weight: 300; letter-spacing: -0.02em; margin: 0; text-wrap: balance; }
-h1 { font-weight: 200; font-size: clamp(3rem, 6.6vw, 6rem); line-height: 1; }
+h1, h2 { font-family: var(--f-display); font-weight: 300; letter-spacing: -0.03em; margin: 0; text-wrap: balance; }
+h1 { font-size: clamp(2.55rem, 5vw, 4.5rem); line-height: 0.98; }
+.keep { white-space: nowrap; }
 h2 { font-size: clamp(2.5rem, 4vw, 3.5rem); line-height: 1.02; margin: 14px 0 18px; }
 .lead { font-size: 1.0625rem; color: var(--acier-300); max-width: 44ch; margin: var(--s3) 0 var(--s4); }
 
@@ -168,7 +169,7 @@ h2 { font-size: clamp(2.5rem, 4vw, 3.5rem); line-height: 1.02; margin: 14px 0 18
   .chapter { padding: 88px var(--pad-x) calc(16px + env(safe-area-inset-bottom)); }
   .chapter--hero { padding-bottom: calc(48px + env(safe-area-inset-bottom)); }
   .panel { padding: 22px 20px 16px; }
-  h2 { font-size: 2.25rem; margin: 10px 0 12px; }
+  h2 { font-size: 2.125rem; letter-spacing: -0.035em; margin: 10px 0 12px; }
   .p-desc { font-size: 15px; line-height: 1.55; }
   .chips { margin-top: 14px; gap: 6px; }
   .chips li { font-size: 10.5px; padding: 5px 8px; }
