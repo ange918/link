@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Anatomie d'un long-courrier · Démo 3D interactive</title>
+  <meta name="description" content="Démo 3D interactive : un avion de ligne présenté pièce par pièce au défilement, avec poste de pilotage et moteur en vue écorchée." />
+  <meta name="theme-color" content="#05070A" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 26 26' fill='none'%3E%3Ccircle cx='13' cy='13' r='12' stroke='%23EEF2F6' stroke-opacity='.5'/%3E%3Cpath d='M4 15.5 L13 6 L22 15.5 M13 6 V21 M9 21 H17' stroke='%235CC8FF' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+</head>
+<body>
+  <a class="skip" href="#fuselage">Aller au premier chapitre</a>
+
+  <div class="stage" aria-hidden="true">
+    <canvas id="scene"></canvas>
+    <div class="vignette"></div>
+    <div class="callouts" id="callouts"><svg></svg></div>
+    <p class="bignum" id="bigNum"></p>
+  </div>
+
+  <div class="loader" id="loader" role="status" aria-live="polite">
+    <div class="loader__inner">
+      <svg class="brandmark" viewBox="0 0 26 26" aria-hidden="true"><circle cx="13" cy="13" r="12"/><path d="M4 15.5 L13 6 L22 15.5 M13 6 V21 M9 21 H17"/></svg>
+      <p class="loader__title">Anatomie d'un long-courrier</p>
+      <div class="loader__bar"><span id="loaderBar"></span></div>
+      <p class="loader__text" id="loaderText">Chargement du modèle 3D…</p>
+    </div>
+  </div>
+
+  <header class="topbar">
+    <a class="brand" href="#hero" aria-label="Anatomie, retour au début">
+      <svg class="brandmark" viewBox="0 0 26 26" aria-hidden="true"><circle cx="13" cy="13" r="12"/><path d="M4 15.5 L13 6 L22 15.5 M13 6 V21 M9 21 H17"/></svg>
+      <span>Anatomie</span>
+    </a>
+    <p class="topbar__meta" aria-live="polite"><span class="topbar__num" id="chapterNum"></span><span id="chapterLabel">Vue d'ensemble</span></p>
+    <a class="chip chip--link" href="#credits"><span class="dot" aria-hidden="true"></span>Crédits</a>
+  </header>
+
+  <nav class="progress" aria-label="Chapitres">
+    <ol id="progress"></ol>
+  </nav>
+
+  <main id="story">
+    <section class="chapter chapter--hero" id="hero" data-index="0">
+      <div class="hero">
+        <p class="eyebrow">Démo 3D interactive</p>
+        <h1>Anatomie<br />d'un long-courrier</h1>
+        <p class="lead">Faites défiler : l'avion se démonte pièce par pièce, ouvre son poste de pilotage et son moteur, puis se réassemble.</p>
+        <a class="btn btn--primary" href="#eclate">
+          Commencer
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3v10M4 9l4 4 4-4"/></svg>
+        </a>
+      </div>
+    </section>
+
+    <section class="chapter" id="eclate" data-index="1">
+      <article class="panel">
+        <span class="tick tl"></span><span class="tick tr"></span><span class="tick bl"></span><span class="tick br"></span>
+        <p class="sec-num">Vue éclatée</p>
+        <h2>Treize pièces, un seul appareil</h2>
+        <p class="p-desc">Le modèle 3D a été découpé en pièces distinctes : fuselage, nez, ailes, mâts, nacelles, soufflantes, dérive et plans horizontaux. Le train d'atterrissage, la cabine, le poste de pilotage et le moteur écorché ont été ajoutés en modélisation procédurale.</p>
+      </article>
+    </section>
+
+    <!-- chapitres injectés depuis src/content.js -->
+    <div id="chapters"></div>
+
+    <section class="chapter chapter--final" id="final" data-index="9">
+      <article class="panel panel--final">
+        <span class="tick tl"></span><span class="tick tr"></span><span class="tick bl"></span><span class="tick br"></span>
+        <p class="sec-num">Réassemblage</p>
+        <h2>Prêt pour le départ</h2>
+        <p class="p-desc">Chaque pièce a retrouvé sa place : la structure, la voilure, la propulsion et les commandes forment de nouveau un seul appareil.</p>
+        <div class="actions">
+          <a class="btn btn--primary" href="#hero">
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 8a5.5 5.5 0 1 0 1.8-4.1L2.5 5.5"/><path d="M2.5 2.5v3h3"/></svg>
+            Revoir depuis le début
+          </a>
+          <a class="btn btn--ghost" href="#credits">Crédits</a>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <footer class="credits" id="credits">
+    <div class="credits__inner">
+      <h2>Crédits &amp; sources</h2>
+      <ul>
+        <li><strong>Modèle 3D</strong> « A350 » (variante sans logo) par <a href="https://github.com/amvlab/aircraft-models" rel="noopener">amvlab</a>, sous licence <a href="https://creativecommons.org/licenses/by/4.0/deed.fr" rel="noopener">CC BY 4.0</a>. Modifications : découpage en pièces nommées, subdivision de Loop du nez et des nacelles, normales recalculées, recentrage, compression meshopt et texture WebP.</li>
+        <li><strong>Poste de pilotage, moteur écorché, train d'atterrissage et cabine</strong> : modélisation procédurale en Three.js pour cette démo, à titre d'illustration. Proportions approximatives ; les écrans du cockpit sont des visuels génériques sans données.</li>
+        <li><strong>Subdivision</strong> : <a href="https://github.com/stevinz/three-subdivide" rel="noopener">three-subdivide</a> (MIT), utilisée hors ligne lors de la préparation du modèle.</li>
+        <li><strong>Direction visuelle</strong> : guide de style « Veille design » (palette nuit, silhouettes fantômes, grille au sol).</li>
+        <li><strong>Polices</strong> Sora, Inter et B612 Mono, auto-hébergées, SIL Open Font License.</li>
+        <li><strong>Stack</strong> : Vite, Three.js, GSAP ScrollTrigger.</li>
+      </ul>
+      <p class="credits__note">Démo non affiliée aux constructeurs aéronautiques. Textes à visée pédagogique et générale, sans valeurs chiffrées.</p>
+    </div>
+  </footer>
+
+  <div class="fallback" id="fallback" hidden>
+    <p>La 3D n'a pas pu démarrer sur cet appareil (WebGL indisponible). Le contenu texte reste accessible ci-dessous.</p>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
