@@ -774,6 +774,12 @@ function showHeroFinal() {
   gsap.set('.hero .btn', { autoAlpha: 1 });
   heroPlayed = true;
 }
+function parkHero() {
+  gsap.set('.eyebrow__in', { opacity: 0, letterSpacing: '0.3em' });
+  gsap.set('.hero .mask-inner', { yPercent: 110 });
+  gsap.set('.hero .lead', { autoAlpha: 0, y: motion.y(12) });
+  gsap.set('.hero .btn', { autoAlpha: 0 });
+}
 function playHero() {
   if (heroPlayed) return;
   heroPlayed = true;
@@ -796,6 +802,7 @@ function finishLoader(ok) {
     else showHeroFinal();
   };
   loader.style.pointerEvents = 'none';
+  if (ok && !reduced) parkHero();
   if (reduced || !ok) gsap.to(loader, { autoAlpha: 0, duration: motion.dur.fade, onComplete: done });
   else {
     showProgress(100);
@@ -818,7 +825,10 @@ function mountPanel(section) {
   });
   tlP.fromTo(panel, { autoAlpha: 0, y: yIn }, { autoAlpha: 1, y: 0, duration: 0.12 }, 0);
   if (num) tlP.fromTo(num, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.08 }, 0.02);
-  if (title) tlP.fromTo(title, { yPercent: 110 }, { yPercent: 0, duration: 0.14 }, 0.05);
+  if (title) {
+    tlP.set(title, { yPercent: 110 }, 0);
+    tlP.to(title, { yPercent: 0, duration: 0.14 }, 0.05);
+  }
   if (desc) tlP.fromTo(desc, { autoAlpha: 0, y: motion.y(8) }, { autoAlpha: 1, y: 0, duration: 0.1 }, 0.14);
   chips.forEach((chip, n) => {
     tlP.fromTo(chip, { autoAlpha: 0, y: motion.y(6) }, { autoAlpha: 1, y: 0, duration: 0.06 }, 0.2 + n * 0.018);

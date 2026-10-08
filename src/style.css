@@ -6,7 +6,7 @@
   --titane-50: #EEF2F6; --acier-300: #A3AEBD; --acier-500: #7A8698;
   --horizon-400: #5CC8FF; --horizon-300: #9ADDFF; --signal-400: #FFB23E;
   --ligne: rgba(200, 214, 230, 0.14); --ligne-forte: rgba(200, 214, 230, 0.28);
-  --panel-bg: rgba(10, 14, 20, 0.62); --glow: rgba(92, 200, 255, 0.35);
+  --panel-bg: rgba(10, 14, 20, 0.94); --glow: rgba(92, 200, 255, 0.35);
   --f-display: 'Space Grotesk', system-ui, sans-serif; --f-body: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif; --f-mono: 'IBM Plex Mono', ui-monospace, monospace;
   --s1: 8px; --s2: 16px; --s3: 24px; --s4: 32px; --s6: 48px; --s8: 64px; --s12: 96px;
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
@@ -109,12 +109,12 @@ svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width:
 .hero { max-width: 600px; }
 .eyebrow { margin: 0 0 var(--s3); font-family: var(--f-mono); font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--horizon-400); }
 .eyebrow__in { display: inline-block; }
-.mask { display: block; overflow: hidden; padding-bottom: 0.12em; margin-bottom: -0.12em; }
+.mask { display: block; overflow: hidden; padding: 0.2em 0 0.22em; margin: -0.2em 0 -0.08em; }
 .mask-inner { display: block; }
 h1, h2 { font-family: var(--f-display); font-weight: 300; letter-spacing: -0.03em; margin: 0; text-wrap: balance; }
-h1 { font-size: clamp(2.55rem, 5vw, 4.5rem); line-height: 0.98; }
+h1 { font-size: clamp(2.55rem, 5vw, 4.5rem); line-height: 1.08; }
 .keep { white-space: nowrap; }
-h2 { font-size: clamp(2.5rem, 4vw, 3.5rem); line-height: 1.02; margin: 14px 0 18px; }
+h2 { font-size: clamp(2.5rem, 4vw, 3.5rem); line-height: 1.12; margin: 14px 0 18px; }
 .lead { font-size: 1.0625rem; color: var(--acier-300); max-width: 44ch; margin: var(--s3) 0 var(--s4); }
 
 .btn { display: inline-flex; align-items: center; gap: 12px; min-height: 52px; padding: 0 26px; border-radius: 999px; font: 500 15px/1 var(--f-body); letter-spacing: 0.01em; text-decoration: none; cursor: pointer; border: 1px solid transparent; transition: background-color var(--dur-xs) var(--ease-out), border-color var(--dur-xs) var(--ease-out), color var(--dur-xs) var(--ease-out), transform var(--dur-press) var(--ease-out); }
@@ -224,14 +224,6 @@ h2 { font-size: clamp(2.5rem, 4vw, 3.5rem); line-height: 1.02; margin: 14px 0 18
   .progress { display: none; }
 }
 
-/* Avant le JS : le hero et les panneaux ne flashent pas. Le mouvement réduit les laisse lisibles. */
-@media (prefers-reduced-motion: no-preference) {
-  .hero .eyebrow__in { opacity: 0; letter-spacing: 0.3em; }
-  .hero .mask-inner { transform: translateY(110%); }
-  .hero .lead, .hero .btn { opacity: 0; }
-  .panel { opacity: 0; }
-  .panel .mask-inner { transform: translateY(110%); }
-}
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; scroll-behavior: auto !important; transition-duration: 1ms !important; }
   #scene { transition: opacity 150ms linear !important; }
